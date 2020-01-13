@@ -126,8 +126,8 @@
     #================================================================
     $tabpage1LabelEnableUsers = New-Object System.Windows.Forms.Label -Property @{
     Text = "Enable Rubys"
-    Location = New-Object System.Drawing.Point(15,20)
-    Size = New-Object System.Drawing.Size(120,40)
+    Location = '15,20'
+    Size = '120,40'
     Font = $LabelFonts
     ForeColor = "Teal"
     BackColor = "White"}
@@ -138,52 +138,60 @@
     $onboardUsernameLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Username:"
     Size = '60,30'
-    Location = New-Object System.Drawing.Point(25,103)}
+    Location = '25,103'
+    }
 
     # Onboarding Username Textbox
     #================================================================
     $onboardUsernameTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
-    Location = New-Object System.Drawing.Point(85,100)}
+    Location = '85,100'
+    }
 
     # Onboarding Team Name Label
     #================================================================
     $onboardingTeamNameLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Team Name:"
     Size = '69,15'
-    Location = New-Object System.Drawing.Point(16,145)}
+    Location = '16,145'
+    }
     
     # Onboarding Team Name Textbox
     #================================================================
     $onboardTeamTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
-    Location = New-Object System.Drawing.Point(85,143)}
+    Location = '85,143'
+    }
     
     # Onboarding Manager Name Label
     $onboardingManagerLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Manager:"
     Size = '52,30'
-    Location = New-Object System.Drawing.Point(32,186)}
+    Location = '32,186'
+    }
     
     # Onboarding Manager Name Textbox
     $onboardManagerTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
-    Location = New-Object System.Drawing.Point(85,185)}
+    Location = '85,185'
+    }
     
     # Onboarding Station Number Label
     $onboardingstationLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Station:"
     Size = '43,30'
-    Location = New-Object System.Drawing.Point(40,232)}
+    Location = '40,232'
+    }
     
     # Onboarding Station Number Textbox
     $onboardStationTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
-    Location = New-Object System.Drawing.Point(85,230)}
+    Location = '85,230'
+    }
 
     # Onboarding Sub Tab Buttons
     # ===============================================================
@@ -195,7 +203,7 @@
     ForeColor = "Teal"
     AutoSize = $True
     Font = $LabelFonts
-    Location = New-Object System.Drawing.Point(240,65)
+    Location = '240,65'
     }
 
     # Next Adventure Main Label
@@ -205,7 +213,7 @@
     ForeColor = "Teal"
     Font = $LabelFonts
     AutoSize = $True
-    Location = New-Object System.Drawing.Point(240,210)
+    Location = '240,210'
     }
 
     # Next Adventure Sales Button
@@ -214,10 +222,11 @@
     Text = ' Next Adventure Sales '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(240,246)
+    Location = '240,246'
     }
     $NADVSales.add_click({
     
+    if ($onboardUsernameTB.Text -ne "" -and $onboardTeamTB.Text -ne "" -and $onboardManagerTB.Text -ne "" -and $onboardStationTB.Text -ne "") {
     
     $NextAdvSalesUser = $onboardUsernameTB.Text
     $NextAdvSalesPrevTeam = $onboardTeamTB.Text
@@ -229,33 +238,47 @@
     Get-ADUser $NextAdvSalesUser | Move-ADObject -TargetPath 'OU=PDX Sales,OU=Ruby Users,DC=ruby,DC=local' -Verbose
     Get-ADUser $NextAdvSalesUser | Set-ADUser -Manager $NextSalesManager -Verbose
     Get-ADUser $NextAdvSalesUser | Set-ADUser -Office $NextSalesOfficeLoc -Verbose
+    Get-ADUser $NextAdvSalesUser | Set-ADUser -PasswordNeverExpires $false -Verbose
 
-       
-        
-        
-                Remove-ADGroupMember -Identity $NextAdvSalesPrevTeam -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity ALL_Receptionists_Prl_Sec -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity ALL_Receptionists_Bvt_Sec -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity All_Receptionists_SEC -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity PearlTeam -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity beavertonteam -Members $NextAdvSalesUser -confirm:$false -Verbose
-                Remove-ADGroupMember -Identity Exclaimer_group1 -Members $NextAdvSalesUser -confirm:$false -Verbose
+               $groupRemovalsNAS = @(
+                                     "$($NextAdvSalesPrevTeam)",
+                                     "ALL_Receptionists_Prl_Sec",
+                                     "ALL_Receptionists_Bvt_Sec",
+                                     "PearlTeam",
+                                     "beavertonteam",
+                                     "Exclaimer_group1"
+                                    )
+                                    foreach ($remGroup in $groupRemovalsNAS) {
+                                          
+                                        Try { Remove-ADGroupMember -Identity $remGroup -Members $NextAdvSalesUser -confirm:$false -Verbose }
+                                            
+                                             Catch {Write-Host "$($NextAdvSalesUser) is not a member of the group $($remGroup)" -ForegroundColor Yellow}
+                                         
+                                    }
+                                            
+                   $groupAddsNAS = @(
+                                     "FoxTower",
+                                     "FS_TC_Audio_Agreements_RW",
+                                     "GrowingLeaders",
+                                     ('ISR' + ' ' + 'Team-1739626290'),
+                                     "Logi_NonReceptionist",
+                                     "NonReceptionists",
+                                     "pearl_sql_users",
+                                     "PublicFolderAccess",
+                                     "SALES",
+                                     ('Sales' + ' ' + 'and' + ' ' + 'Onboarding-1-488285678'),
+                                     "Sales_Sales_SEC",
+                                     "SP_SalesAssociates"
+                                    )
+                                    foreach ($addGroup in $groupAddsNAS) {
+                                    
+                                        Try {Add-ADGroupMember -Identity $addGroup -Members $NextAdvSalesUser -Verbose}
+                                    
+                                            Catch {Write-Host " Unable to add $($NextAdvSalesUser) to the following group: $($addGroup)" -ForegroundColor Yellow}
+                                    
+                                    
+                                    }
             
-          
-
-                Add-ADGroupMember -Identity FoxTower -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity FS_TC_Audio_Agreements_RW -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity GrowingLeaders -Members
-                Add-ADGroupMember -Identity ('ISR' + ' ' + 'Team-1739626290') -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity Logi_NonReceptionist -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity NonReceptionists -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity pearl_sql_users -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity PublicFolderAccess -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity SALES -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity ('Sales' + ' ' + 'and' + ' ' + 'Onboarding-1-488285678') -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity ('Sales' + ' ' + 'Team') -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity Sales_Sales_SEC -Members $NextAdvSalesUser -Verbose
-                Add-ADGroupMember -Identity SP_SalesAssociates -Members $NextAdvSalesUser -Verbose
 
 clear
             
@@ -267,7 +290,17 @@ Write-Host "
 |=========================================|
 " -ForegroundColor Green
     
-    })
+    } 
+    
+    Else {
+          
+          $invalidInputNotifSales = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+          $invalidInputNotifSales.Popup("Username, Team Name, Manager Username, and station required!",0,"Invalid Input - Next Adventure Sales") 
+         
+         }
+    
+})
 
     # Next Adventure CH Button
     #================================================================#
@@ -275,11 +308,13 @@ Write-Host "
     Text = ' Next Adventure CH '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(372,246)
+    Location = '372,246'
     }
     $NADVCH.add_click({
+
+    if ($onboardUsernameTB.Text -ne "" -and $onboardStationTB.Text -ne "") {
     
-    Write-Host "Onboard new CH
+Write-Host "Onboard new CH
 ==============================" -BackgroundColor Blue -ForegroundColor Green
 Write-Host ""
 
@@ -300,17 +335,18 @@ $hpUser = ('HP' + $firstname + '.' + $lastname)
 $hpsur = ('HP ' + $lastname)
 $hpgiv = $lastname
 $hpOU = 'OU=Hurdles & Praise,OU=Non-Human Users,OU=Ruby Users - System\, Non-Human\, External,DC=ruby,DC=local'
-$hpprincname = ('HP' + $firstname + '.' + $lastname + '@callruby.com')
+$hpprincname = ('HP' + $firstname + '.' + $lastname + '@ruby.com')
 
 
 # Modifys Multiple attributes on newly created user
 # Based on the input at the beginning of the script
 # Then moves user to the proper OU
-Get-ADUser $username | Set-ADUser -Office $officeloc
-Get-ADUser $username | Set-ADUser -ScriptPath 'ch.bat'
-Get-ADUser $username | Set-ADUser -Title $jobtitle
-Get-ADUser $username | Set-ADUser -Manager $manager
-Get-ADUser $username | Set-ADUser -Department $department
+Get-ADUser $username | Set-ADUser -Office $officeloc -Verbose
+Get-ADUser $username | Set-ADUser -ScriptPath 'ch.bat' -Verbose
+Get-ADUser $username | Set-ADUser -Title $jobtitle -Verbose
+Get-ADUser $username | Set-ADUser -Manager $manager -Verbose
+Get-ADUser $username | Set-ADUser -Department $department -Verbose
+Get-ADUser $username | Set-ADUser -PasswordNeverExpires $false -Verbose
 Get-ADUser $username | Move-ADObject -TargetPath 'OU=PDX Client Happiness,OU=Ruby Users,DC=ruby,DC=local' -Verbose
 
 # Adds user to associated AD groups
@@ -348,14 +384,25 @@ clear
 
 Write-Host "CH Next Adventure changed in AD and Exhange!" -BackgroundColor Blue -ForegroundColor Green
     
-    })
+
+}
+
+Else {
+     
+      $invalidInputNACH = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+      $invalidInputNACH.Popup("Username and station required!",0,"Invalid Input - Next Adventure CH")           
+
+     }
+
+})
     
     # Sub Tab Onboarding PRL Recep Button
     $EnablePRLButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " PRL Receptionist "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(240,100)}
+    Location = '240,100'}
     $EnablePRLButton.add_click({
 
        if ($onboardUsernameTB.Text -ne "" -and $onboardTeamTB.Text -ne "" -and $onboardManagerTB.Text -ne "" -and $onboardStationTB.Text -ne "") {
@@ -368,11 +415,14 @@ Write-Host "CH Next Adventure changed in AD and Exhange!" -BackgroundColor Blue 
             Get-ADUser $NewRubyUser | Enable-ADAccount -Verbose
 
             Get-ADUser $NewRubyUser | Set-ADUser -Office $NewRubyOfficeLoc -Verbose
-            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@callruby.com').ToLower();
+            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@ruby.com').ToLower();
             Get-ADUser $NewRubyUser | Set-ADUser -Manager $NewRubyCulti -Verbose
             Get-ADUser $NewRubyUser | Set-ADUser -Title "$NewRubyTeam Receptionist" -Verbose
+            Get-ADUser $NewRubyUser | Set-ADUser -PasswordNeverExpires $false -Verbose
+            Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
 
             Get-ADUser $NewRubyUser | Move-ADObject -TargetPath 'OU=PDX Receptionists,OU=Ruby Users,DC=ruby,DC=local' -Verbose
+            
             Add-ADGroupMember -Identity PearlTeam $NewRubyUser -Verbose
             Add-ADGroupMember -Identity $NewRubyTeam $NewRubyUser -Verbose
             Add-ADGroupMember -Identity Exclaimer_Group1 $NewRubyUser -Verbose
@@ -382,6 +432,7 @@ Write-Host "CH Next Adventure changed in AD and Exhange!" -BackgroundColor Blue 
             Add-ADGroupMember -Identity ALL_Receptionists_Prl_Sec $NewRubyUser -Verbose
             Add-ADGroupMember -Identity All_Receptionists_SEC $NewRubyUser -Verbose
             Add-ADGroupMember -Identity SEC_SOPHOS_Standard_WebFiltering $NewRubyUser -Verbose
+            Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $NewRubyUser -Verbose
 
             $StopWatch = [System.Diagnostics.StopWatch]::StartNew()
 
@@ -433,9 +484,9 @@ $StopWatch = $null
 }
 
 
-Enable-RemoteMailbox -Identity $NewRubyUser -RemoteRoutingAddress ($NewRubyUser + '@callruby.com') -Verbose
+     Enable-RemoteMailbox -Identity $NewRubyUser -PrimarySmtpAddress ($NewRubyUser + '@ruby.com')  -RemoteRoutingAddress ($NewRubyUser + '@callruby.mail.onmicrosoft.com') -Verbose
 
-Get-RemoteMailbox -Identity $NewRubyUser
+     Get-RemoteMailbox -Identity $NewRubyUser
 
 Write-Host "$NewRubyUser Enabled!
 ===========================================================================================
@@ -443,7 +494,15 @@ Write-Host "$NewRubyUser Enabled!
 | Command: Get-RemoteMailbox -Identity %Username%                                         |
 ===========================================================================================" -ForegroundColor Yellow
 
- } Else {Write-Host "Username, Team Name, Manager Username, and station required!" -ForegroundColor Red}
+ } 
+ 
+ Else {
+ 
+      $invalidInputNotifPRL = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+      $invalidInputNotifPRL.Popup("Username, Team Name, Manager Username, and station required!",0,"Invalid Input - Pearl Receptionist") 
+ 
+      }
 
 })
 
@@ -452,7 +511,7 @@ Write-Host "$NewRubyUser Enabled!
     AutoSize = $True
     Text = " BVT Receptionist "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(350,100)}
+    Location = '350,100'}
     $EnableBVTButton.add_click({
     
        if ($onboardUsernameTB.Text -ne "" -and $onboardTeamTB.Text -ne "" -and $onboardManagerTB.Text -ne "" -and $onboardStationTB.Text -ne "") {
@@ -465,9 +524,11 @@ Write-Host "$NewRubyUser Enabled!
             Get-ADUser $NewRubyUser | Enable-ADAccount -Verbose
 
             Get-ADUser $NewRubyUser | Set-ADUser -Office $NewRubyOfficeLoc -Verbose
-            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@callruby.com').ToLower();
+            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@ruby.com').ToLower();
             Get-ADUser $NewRubyUser | Set-ADUser -Manager $NewRubyCulti -Verbose
             Get-ADUser $NewRubyUser | Set-ADUser -Title "$NewRubyTeam Receptionist" -Verbose
+            Get-ADUser $NewRubyUser | Set-ADUser -PasswordNeverExpires $false -Verbose
+            Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
 
             Get-ADUser $NewRubyUser | Move-ADObject -TargetPath 'OU=BVN Receptionists,OU=Ruby Users,DC=ruby,DC=local' -Verbose
             Add-ADGroupMember -Identity beavertonteam $NewRubyUser -Verbose
@@ -479,6 +540,7 @@ Write-Host "$NewRubyUser Enabled!
             Add-ADGroupMember -Identity ALL_Receptionists_Bvt_Sec $NewRubyUser -Verbose
             Add-ADGroupMember -Identity All_Receptionists_SEC $NewRubyUser -Verbose
             Add-ADGroupMember -Identity SEC_SOPHOS_Standard_WebFiltering $NewRubyUser -Verbose
+            Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $NewRubyUser -Verbose
 
             $StopWatch = [System.Diagnostics.StopWatch]::StartNew()
 
@@ -530,7 +592,9 @@ $StopWatch = $null
 }
 
 
-Enable-RemoteMailbox -Identity $NewRubyUser -RemoteRoutingAddress ($NewRubyUser + '@callruby.com') -Verbose
+Enable-RemoteMailbox -Identity $NewRubyUser -PrimarySmtpAddress ($NewRubyUser + '@ruby.com')  -RemoteRoutingAddress ($NewRubyUser + '@callruby.mail.onmicrosoft.com') -Verbose
+
+Get-RemoteMailbox -Identity $NewRubyUser
 
 
 Write-Host "$NewRubyUser Enabled!
@@ -540,7 +604,15 @@ Write-Host "$NewRubyUser Enabled!
 ===========================================================================================" -ForegroundColor Yellow
     
     
- } Else {Write-Host "Username, Team Name, Manager Username, and station required!" -ForegroundColor Red}
+ } 
+ 
+ Else {
+ 
+       $invalidInputNotifBVT = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       $invalidInputNotifBVT.Popup("Username, Team Name, Manager Username, and station required!",0,"Invalid Input - Beaverton Receptionist") 
+ 
+      }
 
 })
 
@@ -549,7 +621,7 @@ Write-Host "$NewRubyUser Enabled!
     AutoSize = $True
     Text = " KC Receptionist "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(460,100)}
+    Location = '460,100'}
     $EnableKCButton.add_click({
     
         if ($onboardUsernameTB.Text -ne "") {
@@ -559,7 +631,8 @@ Write-Host "$NewRubyUser Enabled!
 
             Get-ADUser $NewRubyUser | Enable-ADAccount -Verbose
 
-            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@callruby.com').ToLower();
+            Get-ADUser $NewRubyUser | Set-ADUser -EmailAddress ($NewRubyUser + '@ruby.com').ToLower();
+            Get-ADUser $NewRubyUser | Set-ADUser -PasswordNeverExpires $false -Verbose
             Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
 
             Get-ADUser $NewRubyUser | Move-ADObject -TargetPath 'OU=ProChats,OU=Ruby Users,DC=ruby,DC=local' -Verbose
@@ -568,6 +641,7 @@ Write-Host "$NewRubyUser Enabled!
             Add-ADGroupMember -Identity SEC_Sophos_Standard_WebFiltering $NewRubyUser -Verbose
             Add-ADGroupMember -Identity Logi_NonReceptionist -Members $NewRubyUser -Verbose
             Add-ADGroupMember -Identity APP_SSO_ProChatsOnline_Access -Members $NewRubyUser -Verbose
+            Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $NewRubyUser -Verbose
 
             $isNonRecep = Get-ADUser -Identity $NewRubyUser | Select -Property Title
 
@@ -622,7 +696,9 @@ $StopWatch = $null
 }
 
 
-Enable-RemoteMailbox -Identity $NewRubyUser -RemoteRoutingAddress ($NewRubyUser + '@callruby.com') -Verbose
+Enable-RemoteMailbox -Identity $NewRubyUser -PrimarySmtpAddress ($NewRubyUser + '@ruby.com')  -RemoteRoutingAddress ($NewRubyUser + '@callruby.mail.onmicrosoft.com') -Verbose
+
+Get-RemoteMailbox -Identity $NewRubyUser
 
 
 Write-Host "$NewRubyUser Enabled!
@@ -632,7 +708,15 @@ Write-Host "$NewRubyUser Enabled!
 ===========================================================================================" -ForegroundColor Yellow
     
     
- } Else {Write-Host "Username Required!" -ForegroundColor Red }    
+ } 
+ 
+ Else {
+ 
+       $invalidInputNotifKC = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       $invalidInputNotifKC.Popup("Username is required!",0,"Invalid Input - KC Receptionist") 
+ 
+      }    
     
 })
 
@@ -641,7 +725,7 @@ Write-Host "$NewRubyUser Enabled!
     AutoSize = $True
     Text = " Sales "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(240,140)}
+    Location = '240,140'}
     $EnableSalesButton.add_click({
     
          if ($onboardUsernameTB.Text -ne "" -and $onboardManagerTB.Text -ne "" -and $onboardStationTB.Text -ne "" ) {
@@ -656,6 +740,8 @@ Write-Host "$NewRubyUser Enabled!
                 Get-ADUser $NewRubyUser | Move-ADObject -TargetPath 'OU=PDX Sales,OU=Ruby Users,DC=ruby,DC=local' -Verbose
                 Get-ADUser $NewRubyUser | Set-ADUser -Manager $EnableSalesNewManager -Verbose
                 Get-ADUser $NewRubyUser | Set-ADUser -Office $EnableSalesStation -Verbose
+                Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
+                Get-ADUser $NewRubyUser | Set-ADUser -PasswordNeverExpires $false -Verbose
 
                 Add-ADGroupMember -Identity FoxTower -Members $NewRubyUser -Verbose
                 Add-ADGroupMember -Identity FS_TC_Audio_Agreements_RW -Members $NewRubyUser -Verbose
@@ -671,6 +757,7 @@ Write-Host "$NewRubyUser Enabled!
                 Add-ADGroupMember -Identity Sales_Sales_SEC -Members $NewRubyUser -Verbose
                 Add-ADGroupMember -Identity SP_SalesAssociates -Members $NewRubyUser -Verbose
                 Add-ADGroupMember -Identity SEC_Sophos_Standard_WebFiltering $NewRubyUser -Verbose
+                Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $NewRubyUser -Verbose
 
                 clear
 
@@ -726,7 +813,9 @@ $StopWatch = $null
 }
 
 
-Enable-RemoteMailbox -Identity $NewRubyUser -RemoteRoutingAddress ($NewRubyUser + '@callruby.com') -Verbose
+Enable-RemoteMailbox -Identity $NewRubyUser -PrimarySmtpAddress ($NewRubyUser + '@ruby.com')  -RemoteRoutingAddress ($NewRubyUser + '@callruby.mail.onmicrosoft.com') -Verbose
+
+Get-RemoteMailbox -Identity $NewRubyUser
 
 
 Write-Host "$NewRubyUser Enabled!
@@ -736,16 +825,25 @@ Write-Host "$NewRubyUser Enabled!
 ===========================================================================================" -ForegroundColor Yellow
     
     
-  } Else {Write-Host "Username, Manager Username, or Station number not provided!" -ForegroundColor Red}  
+  } 
+  
+  Else {
+  
+        $invalidInputNotifSalesNew = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $invalidInputNotifSalesNew.Popup("Username, Team Name, Manager Username, and station required!",0,"Invalid Input - Sales") 
+       
+       }  
 
 })
+
 
     # Sub Tab Onboarding Generic Admin Button
     $EnableGAButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Generic Admin "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(318,140)}
+    Location = '318,140'}
     $EnableGAButton.add_click({
     
        if ($onboardUsernameTB.Text -ne "" -and $onboardManagerTB.Text -ne "" -and $onboardStationTB.Text -ne "") {
@@ -757,6 +855,9 @@ Write-Host "$NewRubyUser Enabled!
                 Get-ADUser $NewRubyUser | Enable-ADAccount -Verbose
                 Get-ADUser $NewRubyUser | Set-ADUser -Office $EnableAdminStation -Verbose
                 Get-ADUser $NewRubyUser | Set-ADUser -Manager $EnableAdminNewManager -Verbose
+                Get-ADUser $NewRubyUser | Set-ADUser -PasswordNeverExpires $false -Verbose
+                Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
+                
                 Add-ADGroupMember -Identity SEC_Sophos_Standard_WebFiltering $NewRubyUser -Verbose
 
                 # .net form for a multi select box for adding new admin to multiple selected security groups or dristros
@@ -954,7 +1055,9 @@ $StopWatch = $null
 }
 
 try {
-    Enable-RemoteMailbox -Identity $NewRubyUser -RemoteRoutingAddress ($NewRubyUser + '@callruby.com') -Verbose
+     Enable-RemoteMailbox -Identity $NewRubyUser -PrimarySmtpAddress ($NewRubyUser + '@ruby.com')  -RemoteRoutingAddress ($NewRubyUser + '@callruby.mail.onmicrosoft.com') -Verbose
+
+     Get-RemoteMailbox -Identity $NewRubyUser
     }
     catch {Write-Host "$NewRubyUser remote mailbox already enabled!" -ForegroundColor Yellow}
 
@@ -965,16 +1068,25 @@ Write-Host "$NewRubyUser Enabled!
 ===========================================================================================" -ForegroundColor Yellow
     
     
-  } Else {Write-Host "Username, Manager name, and station number required!" -ForegroundColor Red}    
+  } 
+  
+  Else {
+  
+        $invalidInputNotifAdmin = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $invalidInputNotifAdmin.Popup("Username, Team Name, Manager Username, and station required!",0,"Invalid Input - Generic Admin") 
+  
+       }    
     
 })
+
 
     # Verify AD User Button
     $EnableVerifyButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Verify User "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(30,270)}
+    Location = '30,270'}
     $EnableVerifyButton.add_click({
         
         $ErrorActionPreference = 'SilentlyContinue'
@@ -991,18 +1103,626 @@ Write-Host "$NewRubyUser Enabled!
                                                }
                                    })
 
+
     # Sub Tab Onboarding Clear Textboxes Button
     $EnableClearButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Clear fields "
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(108,270)}
+    Location = '108,270'}
     $EnableClearButton.add_click({
                                   $onboardStationTB.Clear()
                                   $onboardManagerTB.Clear()
                                   $onboardTeamTB.Clear()
                                   $onboardUsernameTB.Clear()
                                   })
+    
+    #==========================================================#
+    #
+    #  Onboard Via Template Section
+    #
+    #==========================================================#
+
+    
+    # Onboarding Template Generator Function
+    Function CreateUserTemplate {
+
+# .Net Assembly Load
+#==========================================================================#
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Main Form
+#==========================================================================#
+$MainForm = New-Object System.Windows.Forms.Form -Property @{
+size = '1110,630'
+BackColor = "lightgray"
+Opacity = .975
+Text = "Onboarding template generator"
+StartPosition = 'CenterScreen'
+}
+$mainIcon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\wizard.ico")
+$MainForm.Icon = $mainIcon
+
+$LabelFont = New-Object System.Drawing.Font("Verdana",8,[System.Drawing.FontStyle]::Bold)
+
+
+# Template Name Label
+#==========================================================================#
+$templateNameLabel = New-Object System.Windows.Forms.Label -Property @{
+Location = '12,128'
+Text = "Template Name:"
+AutoSize = $True
+Font = $LabelFont 
+}
+
+# Template Name Textbox
+#==========================================================================#
+$templateNameTextbox = New-Object System.Windows.Forms.TextBox -Property @{
+Location = '10,150'
+Size = '241,20'
+BackColor = "white"
+}
+
+
+# Job Title Label
+#==========================================================================#
+$jobTitleLabel = New-Object System.Windows.Forms.Label -Property @{
+Location = '12,177'
+Text = "Job Title:"
+AutoSize = $True
+Font = $LabelFont 
+}
+
+
+# Job Title Textbox
+#==========================================================================#
+$jobTitle = New-Object System.Windows.Forms.TextBox -Property @{
+BackColor = "white"
+Location = '10,197'
+Size = '241,20'
+}
+
+
+# Department Label
+#==========================================================================#
+$DepartmentLabel = New-Object System.Windows.Forms.Label -Property @{
+Location = '12,230'
+Text = "Department:"
+AutoSize = $True
+Font = $LabelFont
+}
+
+
+# Department Textbox
+#==========================================================================#
+$DepartmentTextBox = New-Object System.Windows.Forms.TextBox -Property @{
+BackColor = "white"
+Location = '10,250'
+Size = '241,20'
+}
+
+
+# OU Dropdown Label
+#==========================================================================#
+$SelectOULabel = New-Object System.Windows.Forms.Label -Property @{
+Location = '12,283'
+Text = "Select Orginizational Unit:"
+AutoSize = $True
+Font = $LabelFont 
+}
+
+
+# Form OU Dropdown Selection
+#==========================================================================# 
+$OUSelectionDropdown = New-Object System.Windows.Forms.ComboBox -Property @{
+AllowDrop = $True
+Size = '240,50'   
+Location = '10,303'
+}
+
+$OUSelectionDropdown.AutoCompleteMode = [System.Windows.Forms.AutoCompleteMode]::SuggestAppend;
+$OUSelectionDropdown.AutoCompleteCustomSource.AddRange(('OU=Billing,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Admin,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN HR,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Information Technology,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Office,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Receptionists,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN RS,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Sales,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=FXT Scheduling Ninjas,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Contractors,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Marketing,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Misc Hourly Rubys,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Administrative,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Client Happiness,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX HR,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Information Technology,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Receptionists,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX RS,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Sales,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=ProChats,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Product,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=RX,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Talent,OU=Ruby Users,DC=ruby,DC=local'));
+$OUSelectionDropdown.AutoCompleteSource = [System.Windows.Forms.AutoCompleteSource]::CustomSource;
+
+$AdOUs = @(
+           'OU=Billing,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Admin,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN HR,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Information Technology,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Office,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Receptionists,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN RS,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=BVN Sales,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=FXT Scheduling Ninjas,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Contractors,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Marketing,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Misc Hourly Rubys,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Administrative,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Client Happiness,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX HR,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Information Technology,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Receptionists,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX RS,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Sales,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=ProChats,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Product,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=RX,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=Talent,OU=Ruby Users,DC=ruby,DC=local'
+           )
+           foreach ($ou in $AdOUs){$OUSelectionDropdown.Items.Add($ou)}
+
+
+# Group Selection Label
+#==========================================================================#
+$SelectGroupsLabel = New-Object System.Windows.Forms.Label -Property @{
+Location = '12,330'
+Text = "Select Groups:"
+AutoSize = $True
+Font = $LabelFont 
+}
+
+# AD Group Listbox
+#==========================================================================#
+$SelectGroupsListbox = New-Object System.Windows.Forms.Listbox -Property @{
+Location = '10,350'
+Size =  '240,230'
+}
+$SelectGroupsListbox.SelectionMode = 'MultiSimple'
+
+$getADgroups = Get-ADGroup -SearchBase 'OU=Ruby Groups,DC=ruby,DC=local' -Filter 'ObjectClass -eq "group"' |
+               select Name | Sort-Object -Property Name
+
+               foreach ($SecGroup in $getADgroups){[void] $SelectGroupsListbox.Items.Add($SecGroup.name)}
+                
+
+# Form Template display grid preview
+#==========================================================================# 
+$TemplatePreviewGrid = New-Object System.Windows.Forms.DataGridView -Property @{
+ColumnCount = 4
+ColumnHeadersVisible = $True
+Size = '780,359'
+Location = '290,151'
+ScrollBars = "Vertical"
+ReadOnly = $True
+BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3d
+BackgroundColor = "Teal"
+}
+$TemplatePreviewGrid.Columns[0].Name = "Title"
+$TemplatePreviewGrid.Columns[0].Width = 160
+$TemplatePreviewGrid.Columns[1].Name = "OU"
+$TemplatePreviewGrid.Columns[1].Width = 260
+$TemplatePreviewGrid.Columns[2].Name = "Department"
+$TemplatePreviewGrid.Columns[2].Width = 160
+$TemplatePreviewGrid.Columns[3].Name = "Groups"
+$TemplatePreviewGrid.Columns[3].Width = 160
+
+
+# Form button for template creation
+#==========================================================================# 
+$GenerateTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Generate Template"
+Location = '900,530'
+AutoSize = $true
+BackColor = 'white'
+}
+$GenerateTemplateButton.add_click({
+
+$doesTemplateExist = Test-Path -Path "$($PSScriptRoot)\OnboardTemplates\$($templateNameTextbox.Text).csv"
+
+if ($doesTemplateExist -eq $false) {
+ 
+$convertGridtoTable = New-Object System.Data.DataTable -Property @{
+TableName = "ConvertTable"
+}
+
+        foreach ($columns in $TemplatePreviewGrid.Columns) {$convertGridtoTable.Columns.Add($columns.Name)}
+
+        foreach ($rows in $SelectGroupsListbox.SelectedItems) {$convertGridtoTable.Rows.Add($null,$null,$null,$rows)}
+
+        $convertGridtoTable.Rows.Add($jobTitle.Text,$OUSelectionDropdown.SelectedItem,$DepartmentTextBox.Text,$null)
+
+        $TemplatePreviewGrid.DataSource = $convertGridtoTable
+
+        $convertGridtoTable | Export-Csv $PSScriptRoot\OnboardTemplates\scratch.csv -Verbose
+
+        $Removefirstrow = get-content $PSScriptRoot\OnboardTemplates\scratch.csv
+        $Removefirstrow | Select-Object -Skip 1 | Set-Content "$($PSScriptRoot)\OnboardTemplates\$($templateNameTextbox.Text).csv" -Verbose
+
+        Remove-Item $PSScriptRoot\OnboardTemplates\scratch.csv -Force -Verbose
+        
+        $MainForm.Hide()
+
+        $templateGenerateMessage = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $templateGenerateMessage.Popup("New Onboarding Template Generated!",0,"Success!") 
+         
+        $MainForm.Close() }
+        
+        Else {
+              $templateFailGenerateMessage = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+              $templateFailGenerateMessage.Popup("$($templateNameTextbox.Text) already exists!`nPlease choose a new template name!",0,"Template Generate failure!") 
+              
+              Remove-Item $PSScriptRoot\OnboardTemplates\scratch.csv -Force -Verbose
+             }        
+})
+
+
+# Form button for template review
+#==========================================================================# 
+$ReviewTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Review Template"
+Location = '790,530'
+AutoSize = $true
+BackColor = 'white'
+}
+$ReviewTemplateButton.add_click({
+                                 
+                                 $TemplatePreviewGrid.rows.Clear()
+
+                                 foreach ($selectedgroup in $SelectGroupsListbox.SelectedItems)
+                                         {$TemplatePreviewGrid.Rows.Add($null,$null,$null,$selectedgroup)}
+                                 
+                                 $TemplatePreviewGrid.Rows[0].Cells[0].Value = $jobTitle.Text
+                                 $TemplatePreviewGrid.Rows[0].Cells[1].Value = $OUSelectionDropdown.SelectedItem
+                                 $TemplatePreviewGrid.Rows[0].Cells[2].Value = $DepartmentTextBox.Text
+                               
+                                 })
+
+
+# Form backgroundimage
+#==========================================================================# 
+$formBGimage = [System.Drawing.Image]::FromFile("$PSScriptRoot\source\Rubycom.png")
+$MainFormBGimag = New-Object System.Windows.Forms.PictureBox -Property @{
+Image = $formBGimage
+AutoSize = $true
+Location = '10,10'
+}
+
+
+# Form components array
+#==========================================================================#
+$formCompArray = @(
+                   $MainFormBGimag,
+                   $templateNameLabel,
+                   $templateNameTextbox,
+                   $jobTitleLabel,
+                   $jobTitle,
+                   $DepartmentLabel,
+                   $DepartmentTextBox,
+                   $SelectOULabel,
+                   $OUSelectionDropdown,
+                   $SelectGroupsLabel,
+                   $SelectGroupsListbox,
+                   $TemplatePreviewGrid,
+                   $ReviewTemplateButton,
+                   $GenerateTemplateButton
+                   )
+                   foreach ($ArrayComp in $formCompArray){$MainForm.controls.add($ArrayComp)}
+
+
+
+$MainForm.ShowDialog()
+
+}
+
+
+    # Onboarding Template Section Label
+    $onboardingTemplateMainLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Enable Ruby via generated template"
+    Font = $LabelFonts
+    Location = '10,345'
+    AutoSize = $True
+    ForeColor = "teal"
+    }
+
+
+    # Onboard via Template Username Textbox Label
+    $OBTUserTextboxLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Username:"
+    Location = '250,375'
+    AutoSize = $True
+    }
+
+
+    # Onboard via Template Username Textbox
+    $OBTUserTextbox = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "Lightgray"
+    size = '120,20'
+    Location = '317,373'
+    }
+
+
+    # Onboard via Template Manager Username Label
+    $OBTManagerTextboxLabel = New-Object System.Windows.Forms.Label -Property @{
+    AutoSize = $True
+    Text = "Manager:"
+    Location = '258,410'
+    }
+
+
+    # Onboard via Template Manager Username Textbox
+    $OBTManagerTextbox = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "LightGray"
+    Size = '120,20'
+    Location = '317,410'
+    }
+
+
+    # Onboard via Template Department Label
+    $OBTTeamLabel = New-Object System.Windows.Forms.Label -Property @{
+    AutoSize = $True
+    Text = "Team Name:"
+    Location = '242,449'
+    }
+
+
+    # Onboard via Template Department Textbox
+    $OBTTeamTextbox = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "LightGray"
+    size = '120,20'
+    Location = '317,447'
+    }
+
+    # Next Adventure Checkbox
+    $OBTNACheckbox = New-Object System.Windows.Forms.CheckBox -Property @{
+    Location = '450,373'
+    Text = "Next Adventure?"
+    AutoSize = $True
+    Font = $LabelFonts
+    ForeColor = 'Teal'
+    }
+
+    # Return to roots Checkbox
+    $OBTRTRCheckbox = New-Object System.Windows.Forms.CheckBox -Property @{
+    Location = '450,410'
+    Text = "Return to Roots?"
+    AutoSize = $True
+    Font = $LabelFonts
+    ForeColor = 'Teal'
+    }
+
+
+    # Refresh template list button
+    $RefreshTemplateListButton = New-Object System.Windows.Forms.Button -Property @{
+    AutoSize = $True
+    Text = "Refresh template list"
+    ForeColor = "teal"
+    Location = '457,510'
+    }
+    $RefreshTemplateListButton.add_click({
+    
+    $templateListBox.Items.clear()
+    
+    $RePopulateTemplateListbox = gci "$($PSScriptRoot)\OnboardTemplates\*.csv"
+                                 foreach ($template in $RePopulateTemplateListbox) 
+                                      {[void] $templateListBox.Items.Add($template.name)}
+    
+    
+    })
+
+  
+    # Template listbox selection
+    $templateListBox = New-Object System.Windows.Forms.ListBox -Property @{
+    Size = '200,200'
+    Location = '22,370'
+    }
+    $PopulateTemplateListbox = gci "$($PSScriptRoot)\OnboardTemplates\*.csv"
+                             foreach ($template in $PopulateTemplateListbox) 
+                                     {[void] $templateListBox.Items.Add($template.name)}
+    
+    # Create new template button
+    $CreateTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+    AutoSize = $True
+    Text = "Create template"
+    ForeColor = "teal"
+    Location = '250,510'
+    }
+    $CreateTemplateButton.add_click({CreateUserTemplate})
+
+
+    # Remove template button
+    $RemoveTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+    AutoSize = $True
+    Text = "Remove template"
+    ForeColor = "teal"
+    Location = '350,510'
+    }
+    $RemoveTemplateButton.add_click({
+                                     
+                                      if ($templateListBox.SelectedItem -ne $null) {
+                                     
+                                     Remove-Item -Path "$($PSScriptRoot)\OnboardTemplates\$($templateListBox.SelectedItem)" -Verbose -Force
+
+
+                                     [void] $templateListBox.Items.Remove($templateListBox.SelectedItem)
+                                     
+                                     clear-host
+
+                                     Write-Host "Template Removed!" -ForegroundColor Green
+                                     
+                                     } 
+                                     
+                                     Else {
+                                           
+                                           $OBTRemoveinvalidInput = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+                                           $OBTRemoveinvalidInput.Popup("No Template Selected to remove!",0,"Revmove Error: Missing Input")
+                                    
+                                          }
+                                    
+                                     })
+
+
+    # Review Selected Template Button
+    $reviewSelectedTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Review Template"
+    ForeColor = "Teal"
+    AutoSize = $True
+    Location = '250,545'
+    }
+    $reviewSelectedTemplateButton.add_click({
+                                             if ($templateListBox.SelectedItem -ne $null)
+                                                
+                                                {
+                                                 start "$($PSScriptRoot)\onboardtemplates\$($templateListBox.SelectedItem)"
+                                                }
+                                                 Else {
+                                                       $OBTReviewinvalidInput = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+                                                       $OBTReviewinvalidInput.Popup("No Template Selected to review!",0,"Review Error: Missing Input")
+                                                      }
+                                             
+                                             })
+
+
+    # Enable Ruby via template button
+    $EnableRubyViaTemplateButton = New-Object System.Windows.Forms.Button -Property @{
+    AutoSize = $True
+    Text = "Enable Ruby"
+    ForeColor = "Teal"
+    Location = '357,545'
+    }
+    $EnableRubyViaTemplateButton.add_click({
+            
+            if ($OBTUserTextbox.Text -ne "" -and $OBTManagerTextbox.Text -ne "" -and $OBTDeptTextbox.Text -ne ""){
+
+            if ($OBTNACheckbox.Checked -eq $True -or $OBTRTRCheckbox.Checked -eq $True){
+            
+            $getGroupMembership = Get-ADUser -Identity $OBTUserTextbox.Text -Properties Memberof | select -Expand memberof
+            foreach ($groupmembership in $getGroupMembership) {
+                                                               Write-Host "Removing $($OBTUserTextbox.Text) from $($groupmembership)" -ForegroundColor White
+                                                               Remove-ADGroupMember $groupmembership -Member $OBTUserTextbox.Text -Confirm:$false -Verbose
+                                                               }
+            
+            }
+
+            Get-ADUser $OBTUserTextbox.Text | Enable-ADAccount -Verbose
+            Write-Host "Setting email address to $($OBTUserTextbox.text + '@ruby.com')" -ForegroundColor Green
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -EmailAddress ($OBTUserTextbox.Text + '@ruby.com').ToLower();
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -Manager $OBTManagerTextbox.Text -Verbose
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -Company "Ruby Receptionists" -Verbose
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -PasswordNeverExpires $false -Verbose
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -CannotChangePassword $false -Verbose
+            
+            try  {
+            Add-ADGroupMember -Identity $OBTTeamTextbox.Text $OBTUserTextbox.Text -Verbose
+            } catch {Write-Host "The Team $($OBTTeamTextbox.Text) does not exist!" -ForegroundColor Red}
+
+            Import-Csv "$($PSScriptRoot)\OnboardTemplates\$($templateListBox.SelectedItem)" | ForEach-Object {
+            
+            if ($_.OU -ne ''){
+            Write-Host "Moving to OU $($_.OU)" -ForegroundColor Green 
+            Get-ADUser $OBTUserTextbox.Text | Move-ADObject -TargetPath $_.OU -Verbose
+            }
+            
+            if ($_.Groups -ne ''){
+            Write-Host "adding to group $($_.Groups)" -ForegroundColor Green           
+            Add-ADGroupMember -Identity $_.Groups $OBTUserTextbox.Text -Verbose
+            }
+
+            if ($_.Title -ne '') {
+            Write-Host "Setting Job title to $($OBTTeamTextbox.Text) $($_.Title)....." -ForegroundColor Green
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -Title "$($OBTTeamTextbox.Text) $($_.Title)" -Verbose
+            }
+
+            if ($_.Department -ne ''){
+            Write-Host "Setting department to $($_.Department)" -ForegroundColor Green
+            Get-ADUser $OBTUserTextbox.Text | Set-ADUser -Department $_.Department -Verbose
+            }
+
+            }
+
+            $StopWatch = [System.Diagnostics.StopWatch]::StartNew()
+
+ 
+
+Function Test-Command ($Command)
+
+
+
+{
+
+    Try
+
+    {
+
+        Get-command $command -ErrorAction Stop
+
+        Return $True
+
+    }
+
+    Catch [System.SystemException]
+
+    {
+
+        Return $False
+
+    }
+
+}
+
+ 
+
+IF (Test-Command "Get-Mailbox") {Write-Host "Exchange cmdlets already present"}
+
+Else {
+
+    $CallEMS = ". '$env:ExchangeInstallPath\bin\RemoteExchange.ps1'; Connect-ExchangeServer PRLEMC01 -ClientApplication:ManagementShell "
+
+    Invoke-Expression $CallEMS
+
+
+$stopwatch.Stop()
+$msg = "`n`nThe script took $([math]::round($($StopWatch.Elapsed.TotalSeconds),2)) seconds to execute..."
+Write-Host $msg
+$msg = $null
+$StopWatch = $null
+
+}
+
+
+     Enable-RemoteMailbox -Identity $OBTUserTextbox.Text -PrimarySmtpAddress ($OBTUserTextbox.Text + '@ruby.com')  -RemoteRoutingAddress ($OBTUserTextbox.Text + '@callruby.mail.onmicrosoft.com') -Verbose
+
+     Get-RemoteMailbox -Identity $OBTUserTextbox.Text
+
+Write-Host "$($OBTUserTextbox.Text) Enabled!
+===========================================================================================
+| Run the following command in Exchange Management Shell to verify remotemailbox user     |
+| Command: Get-RemoteMailbox -Identity %Username%                                         |
+===========================================================================================" -ForegroundColor Yellow
+}
+Else {
+      $OBTinvalidInput = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+      $OBTinvalidInput.Popup("Username, Manager Username, and department required!",0,"Enable Error: Missing Input")
+     }
+
+})
 
 
     #================================================================#
@@ -1020,7 +1740,7 @@ Write-Host "$NewRubyUser Enabled!
     #=================================================================#
     $departLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = " Depart Rubys"
-    Location = New-Object System.Drawing.Point(30,40)
+    Location = '30,40'
     Font = $LabelFonts
     ForeColor = "Teal"
     }
@@ -1028,7 +1748,8 @@ Write-Host "$NewRubyUser Enabled!
     # Import CSV to depart Users
     #=================================================================#
     $ImportDepartCSV = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
-    InitialDirectory = [Environment]::GetFolderPath('Desktop') 
+    InitialDirectory = '\\prlfs01\ISWizards\SuperScript\Departed'
+    #[Environment]::GetFolderPath('Desktop') 
     Filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
     }
     
@@ -1036,7 +1757,7 @@ Write-Host "$NewRubyUser Enabled!
     Text = " Import CSV "
     ForeColor = "Teal"
     AutoSize = $True
-    Location = New-Object System.Drawing.Point(30,85)}
+    Location = '30,85'}
     $importcsvbutton.add_click({
                                 $ImportDepartCSV.ShowDialog()
                                 $showselectedCSV.Text = ''
@@ -1045,7 +1766,7 @@ Write-Host "$NewRubyUser Enabled!
 
     $showselectedCSVLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Selected CSV to Depart Users"
-    Location = New-Object System.Drawing.Point(280,43)
+    Location = '280,43'
     Size = '200,30'
     Font = $LabelFonts
     ForeColor = "Teal"
@@ -1054,7 +1775,7 @@ Write-Host "$NewRubyUser Enabled!
     $showselectedCSV = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     ForeColor = "Green"
-    Location = New-Object System.Drawing.Point(280,86)
+    Location = '280,86'
     Size = '320,10'
     ReadOnly = $True }
     
@@ -1065,7 +1786,7 @@ Write-Host "$NewRubyUser Enabled!
     Text = " Depart "
     ForeColor = "Teal"
     AutoSize = $True
-    Location = New-Object System.Drawing.Point(190,85)}
+    Location = '190,85'}
     $departButton.add_click({
     
     if ($ImportDepartCSV.FileName -ne $null){
@@ -1103,8 +1824,9 @@ Write-Host "$NewRubyUser Enabled!
             }
             Else {Write-Host "No CSV selected to import!" -ForegroundColor Red}
     
-    
-    
+    Write-Host "Archiving Departed CSV" -ForegroundColor Green
+    Copy-Item $ImportDepartCSV.FileName -Destination $PSScriptRoot\Departed\Archive -Verbose
+    Remove-Item $ImportDepartCSV.FileName -Verbose -Confirm:$false
     })
 
     
@@ -1113,7 +1835,7 @@ Write-Host "$NewRubyUser Enabled!
     ColumnCount = 2
     ColumnHeadersVisible = $True
     Size = '318,150'
-    Location = New-Object System.Drawing.Point(280,120)
+    Location = '280,120'
     ScrollBars = "Vertical"
     ReadOnly = $True
     BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3d
@@ -1128,7 +1850,7 @@ Write-Host "$NewRubyUser Enabled!
     Text = " Verify  "
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(112,85)}
+    Location = '112,85'}
     $verifyDepartedButton.add_click({
 
         $verifyDepartGrid.Rows.Clear()
@@ -1146,14 +1868,14 @@ Write-Host "$NewRubyUser Enabled!
     Text = ' Clear Import '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(480,36)
+    Location = '480,36'
     }
     $clearImportedCSVButton.add_click({
     
     Try{
         clear
         $ImportDepartCSV.Reset()
-        $ImportDepartCSV.InitialDirectory = [Environment]::GetFolderPath('Desktop') 
+        $ImportDepartCSV.InitialDirectory = '\\prlfs01\ISWizards\SuperScript\Departed'
         $ImportDepartCSV.Filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
         $verifyDepartGrid.Rows.Clear()
         $showselectedCSV.Clear()
@@ -1306,7 +2028,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
 
     $setExpireLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Set AD Account Expiration Date"
-    Location = New-Object System.Drawing.Point(30,300)
+    Location = '30,300'
     Size = '220,30'
     Font = $LabelFonts
     ForeColor = "Teal"
@@ -1316,7 +2038,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Text = ' Set Account Expiration '
     ForeColor = "Teal"
     AutoSize = $True
-    Location = New-Object System.Drawing.Point(30,350)}
+    Location = '30,350'}
     $setExpireButton.add_Click({SetAccountExpireDate})
 
     # Set AD Account Expiration Instructions
@@ -1325,8 +2047,8 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Multiline = $True
     ForeColor = "Black"
     BackColor = "White"
-    Size = New-Object System.Drawing.Point(550,200)
-    Location = New-Object System.Drawing.Point(30,400)
+    Size = '550,200'
+    Location = '30,400'
     ScrollBars = "Vertical"
     BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3d
     Text = "Set AD user Expiration Date Instructions"}
@@ -1360,7 +2082,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     AutoSize = $True
     ForeColor = "Teal"
     Font = $LabelFonts
-    Location = New-Object System.Drawing.Point(30,50)
+    Location = '30,50'
     }
 
     # Exchange / O365 Label
@@ -1370,20 +2092,20 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     AutoSize = $True
     ForeColor = "Teal"
     Font = $LabelFonts
-    Location = New-Object System.Drawing.Point(30,375)
+    Location = '30,375'
     }
 
     # Extended Hours Access Username Label For Username Textbox
     $ModifyRubyUsernameLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Username:"
     Size = '60,30'
-    Location = New-Object System.Drawing.Point(30,85)}
+    Location = '30,85'}
 
     # Extended Hours Access Username Textbox
     $ModifyRubyUsernameTextbox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
-    Location = New-Object System.Drawing.Point(93,83)}
+    Location = '93,83'}
 
     #===============================================================#
     #                   Extended Hours Access                       #
@@ -1394,7 +2116,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     text = ' Provision EH Access '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(202,81)}
+    Location = '202,81'}
     $ExtHoursProvisionButton.add_click({
     
     $RubyExtUser = $ModifyRubyUsernameTextbox.Text
@@ -1793,14 +2515,18 @@ Licenses have been assigned to $($o365upn)
     }
     $Setupo365EmailSig.add_click({
     
+    if ($assigno365LicenseTextBox.Text -ne "") {
+
     cls
-#location of signature template
-$LocationOfSignature= "\\prlfs01\PDQ_Shared_DB\Repository\Signature_Creation\OWA_Signature.htm"
+    
+    #location of signature template
+    $LocationOfSignature = "\\prlfs01\PDQ_Shared_DB\Repository\Signature_Creation\OWA_SignatureRebrand.htm"
 
 
-# See if connected to Exchange Online
-
-$AmIConnectedToExchangeOnline= Get-PSSession | where {$_.ConfigurationName -eq "Microsoft.exchange"}
+    # See if connected to Exchange Online
+ 
+    $AmIConnectedToExchangeOnline= Get-PSSession | 
+    where {$_.ConfigurationName -eq "Microsoft.exchange"}
 
 
     IF ($AmIConnectedToExchangeOnline -eq $null -or $AmIConnectedToExchangeOnline.State -eq "Closed")
@@ -1817,39 +2543,39 @@ $AmIConnectedToExchangeOnline= Get-PSSession | where {$_.ConfigurationName -eq "
         }
 
 
- #Import the template for the signature
+    #Import the template for the signature
 
- $importSignatureTemplate= Get-Content $LocationOfSignature
+    $importSignatureTemplate= Get-Content $LocationOfSignature
 
  
- # Type in the email address or UPN to the user.
+    # Type in the email address or UPN to the user.
 
     DO {
 
         clear
 
         $Stop= "No"
-      $OWA_Sigs_To_Update= $assigno365LicenseTextBox.Text
+        $OWA_Sigs_To_Update= $assigno365LicenseTextBox.Text
       
-      IF ($OWA_Sigs_To_Update -like "*@callruby.com")
+      IF ($OWA_Sigs_To_Update -like "*@ruby.com")
             {
             $Stop= "Yes"
             }
                 else 
                 {
-                Write-Warning "Email address does not contain @callruby.com domain...please try again."
+                Write-Warning "Email address does not contain @ruby.com domain...please try again."
                 }
 
         }
 
         Until ($stop -eq "Yes" )
 
-$GetADUserInfo= Get-ADUser -Filter * -Properties title,department,enabled,emailaddress | where {$_.title -notlike $Null -and $_.department -notlike $null}
+        $GetADUserInfo= Get-ADUser -Filter * -Properties title,department,enabled,emailaddress | 
+        where {$_.title -notlike $Null -and $_.department -notlike $null}
 
+        $UserDetails= $GetADUserInfo | where {$_.UserPrincipalName -eq $OWA_Sigs_To_Update}
 
-$UserDetails= $GetADUserInfo | where {$_.UserPrincipalName -eq $OWA_Sigs_To_Update}
-
-IF ($UserDetails -eq $null)
+    IF ($UserDetails -eq $null)
     {
     Write-Warning "UPN couldn't be found in AD.... Exiting..."
         Start-Sleep -Seconds 4
@@ -1861,15 +2587,15 @@ IF ($UserDetails -eq $null)
 Found $($UserDetails.Name) in Active Directory." -ForegroundColor Green}
         
          
-FOREACH ($signatureUser in $UserDetails)
+    FOREACH ($signatureUser in $UserDetails)
     {
 
- #Generated Signature
+    #Generated Signature
 
- $Signature= @()
+    $Signature= @()
 
 
- # Find the POWERSHELLRECPNAME, and the POWERSHELLRECPTEAMNAME and replace those with the name and the team of the Receptionist.
+    # Find the POWERSHELLRECPNAME, and the POWERSHELLRECPTEAMNAME and replace those with the name and the team of the Receptionist.
     Foreach ($line in $importSignatureTemplate)
         {
 
@@ -1892,18 +2618,23 @@ FOREACH ($signatureUser in $UserDetails)
         }
 
 
-Set-MailboxMessageConfiguration $signatureUser.UserPrincipalName -AutoAddSignature $true -SignatureHtml $Signature -DefaultFontColor "#352E1B"
- #        $Signature | Out-File "C:\Users\chris.georgeson\Desktop\Office365 info\OutlookOnline_Recep_rollout\sigtest.htm"
+    Set-MailboxMessageConfiguration $signatureUser.UserPrincipalName -AutoAddSignature $true -SignatureHtml $Signature -DefaultFontColor "#352E1B"
+    #$Signature | Out-File "C:\Users\chris.georgeson\Desktop\Office365 info\OutlookOnline_Recep_rollout\sigtest.htm"
 
         }
 
-Remove-PSSession $Session 
+    Remove-PSSession $Session 
 
 
-write-host "
+    write-host "
 Signature should be created. Please check OWA to verify." -ForegroundColor Green
     
-    
+    } 
+    Else {
+          $invalidUPN = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+          $invalidUPN.Popup("UPN Required for setting up o365 Email Signature!",0,"Invalid Input - UPN")
+         }
     })
 
 
@@ -2064,7 +2795,22 @@ $getrules = Get-InboxRule -Mailbox $whatUser | select -Property name
                                    $onboardingstationLabel,
                                    $onboardStationTB,
                                    $EnableVerifyButton,
-                                   $EnableClearButton
+                                   $EnableClearButton,
+                                   $onboardingTemplateMainLabel,
+                                   $OBTUserTextboxLabel,
+                                   $OBTUserTextbox,
+                                   $OBTNACheckbox,
+                                   $OBTRTRCheckbox,
+                                   $OBTManagerTextboxLabel,
+                                   $OBTManagerTextbox,
+                                   $OBTTeamLabel,
+                                   $OBTTeamTextbox,
+                                   $templateListBox,
+                                   $RefreshTemplateListButton,
+                                   $CreateTemplateButton,
+                                   $RemoveTemplateButton,
+                                   $reviewSelectedTemplateButton,
+                                   $EnableRubyViaTemplateButton
                                    )
 
       foreach ($ArrayOnboardComp in $onboardingComponentsArray) 
@@ -2488,7 +3234,7 @@ Write-Host "
 | Once complete the user will have to           |
 | log back in with thier UPN name               |
 |                                               |
-| EX: firstname.lastname@callruby.com           |
+| EX: firstname.lastname@ruby.com           |
 |                                               |
 =================================================
 `n" -ForegroundColor Yellow
@@ -3072,7 +3818,7 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     Text = "KC Ricoh"
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(370,210)
+    Location = '370,210'
     }
     $KCAdminConsoleButton.add_click({start chrome.exe https://10.3.2.9/})
 
@@ -3129,10 +3875,10 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     AutoSize = $True
     LinkColor = [System.Drawing.Color]::Teal
     BackColor = "LightGray"
-    Location = New-Object System.Drawing.Point(370,179)
+    Location = '370,229'
     Font = $LabelFonts
     }
-    $AboutInfoMailLink.add_click({[system.Diagnostics.Process]::start("mailto:ithelp@callruby.com")})
+    $AboutInfoMailLink.add_click({[system.Diagnostics.Process]::start("mailto:ithelp@ruby.com")})
 
     # Main About Textbox
     #=====================================================================
@@ -3142,7 +3888,7 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     Multiline = $True
     Size = '500,500'
     Font = $LabelFonts 
-    Location = New-Object System.Drawing.Point(55,20)
+    Location = '55,70'
     }
     $AboutInfoTextbox.AppendText("`r`n
     Superscript GUI Version 2.0
@@ -3226,6 +3972,8 @@ else {
 }
 
 Logs
+
+clear
 
 #Call the form
 Show-tabcontrol_psf | Out-Null
