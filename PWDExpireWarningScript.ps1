@@ -241,7 +241,6 @@ Write-Host "Password is going to expire in $($CalculatePWDExpire) days!" -Foregr
 
 # Send Email to user notifying that password will expire in less than 7 days
 Send-MailMessage -Body $emailBody7 -From PasswordPolicy@ruby.com -BodyAsHtml -To "$($Item.UserPrincipalName)" -Subject "Password Expiration Warning!" -SmtpServer PRLEMC01 -Priority High -Verbose
-#Send-MailMessage -Body $emailBody7 -From PasswordPolicy@ruby.com -BodyAsHtml -To chris.meeuwen@ruby.com -Subject "Password Expiration Warning!" -SmtpServer PRLEMC01 -Priority High -Verbose
 
 }
 
@@ -255,7 +254,6 @@ Write-Host "Password is going to expire in $($CalculatePWDExpire) days!" -Foregr
 
 
 Send-MailMessage -Body $emailBody -From PasswordPolicy@ruby.com -BodyAsHtml -To "$($Item.UserPrincipalName)" -Subject "Password Expiration Warning!" -SmtpServer PRLEMC01 -Priority High -Verbose
-#Send-MailMessage -Body $emailBody -From PasswordPolicy@ruby.com -BodyAsHtml -To chris.meeuwen@ruby.com -Subject "Password Expiration Warning!" -SmtpServer PRLEMC01 -Priority High -Verbose
 
 }
 
