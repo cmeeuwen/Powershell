@@ -1,4 +1,4 @@
-﻿clear
+clear
 
 $erroractionpreference = "silentlycontinue"
 
@@ -20,45 +20,45 @@ $XLOpenWS = $xlDotNet.Worksheets.Item("CMO")
 #===============================================================================#
 $ColumnletterArray = New-Object System.Collections.ArrayList
 
-for ($test = 0; $test -lt 26; $test++)
+for ($num = 0; $num -lt 26; $num++)
 {
-    [char](65 + $test) | ForEach-Object {$ColumnletterArray.Add($_) | Out-Null}
+    [char](65 + $num) | ForEach-Object {$ColumnletterArray.Add($_) | Out-Null}
 }
 
 # Generates Cell count into an array
 #===================================#
 $CellCountArray = New-Object System.Collections.ArrayList
 
-           $xlCellCount = [int32]$XLOpenWS.UsedRange.Cells.Count
-           $xlCellCount++
+$xlCellCount = [int32]$XLOpenWS.UsedRange.Cells.Count
+$xlCellCount++
                                                          
-           Do {
+Do {
 
-               $xlCellCount-- | Out-Null
-               #Write-Host "$($XLColumnCount) is the column Count"
-               $CellCountArray.add($xlCellCount) | Out-Null
+    $xlCellCount-- | Out-Null
+    #Write-Host "$($XLColumnCount) is the column Count"
+    $CellCountArray.add($xlCellCount) | Out-Null
 
 
-              } until ($xlCellCount -eq 0)
+   } until ($xlCellCount -eq 0)
 
-           ForEach ($Column in $ColumnletterArray){
+   ForEach ($Column in $ColumnletterArray){
                                                          
-                   $Column | Out-Null
+           $Column | Out-Null
 
-                   # For Each Loop to store cell values into a variable
-                   foreach ($Cell in $CellCountArray) {
+           # For Each Loop to store cell values into a variable
+           ForEach ($Cell in $CellCountArray) {
                                                                                              
-                           $findCellValue = $XLOpenWS.Range("$($Column)$($Cell)").Text
+                   $findCellValue = $XLOpenWS.Range("$($Column)$($Cell)").Text
 
-                           $ColumnCell = $Column + $Cell
+                   $ColumnCell = $Column + $Cell
                                                       
-                           # If cell value contains specific string and cell number is D14 output to host
-                           If ($findCellValue -eq "Operations" -and $ColumnCell -eq "D14") {
+                   # If cell value contains specific string and cell number is D14 output to host
+                   If ($findCellValue -eq "Operations" -and $ColumnCell -eq "D14") {
                                                                                                                                    
-                              Write-Host "Cell: $($Column)$($Cell) contains the value of $($findCellValue)!" -ForegroundColor Green
+                      Write-Host "Cell: $($Column)$($Cell) contains the value of $($findCellValue)!" -ForegroundColor Green
                                                          
-                                                                #Insert code here
-                                                                #================
+                                                                                    #Insert code here
+                                                                                    #================
                                                                                                                                    
                                                                                                                                    
                                                                                            
@@ -84,19 +84,19 @@ $CellCountArray = New-Object System.Collections.ArrayList
                                                                                            
                                                                                            
                                                                                            
-                                                               }
+                                                                                   }
 
                                                                                                                                    
                                                                                              
                                                          
-                                                      }
+                                                }
                                                          
                                                          
                                                          
 
                                                          
           
-                                                  }
+                                            }
 
 
 $XLOpenWB.close()
