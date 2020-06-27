@@ -52,7 +52,7 @@ $CellCountArray = New-Object System.Collections.ArrayList
 
                            $ColumnCell = $Column + $Cell
                                                       
-                           # If cell value contains specific string and cell number id D14 output to host
+                           # If cell value contains specific string and cell number is D14 output to host
                            If ($findCellValue -eq "Operations" -and $ColumnCell -eq "D14") {
                                                                                                                                    
                               Write-Host "Cell: $($Column)$($Cell) contains the value of $($findCellValue)!" -ForegroundColor Green
