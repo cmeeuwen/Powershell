@@ -1,4 +1,4 @@
-Ôªøfunction Show-tabcontrol_psf {
+function Show-tabcontrol_psf {
 
 	#----------------------------------------------
 	#region Import the Assemblies
@@ -21,6 +21,7 @@
 	$tabpage3 = New-Object 'System.Windows.Forms.TabPage'
 	$tabpage4 = New-Object 'System.Windows.Forms.TabPage'
 	$tabpage5 = New-Object 'System.Windows.Forms.TabPage'
+    $tabpage6 = New-Object 'System.Windows.Forms.TabPage'
 	$InitialFormWindowState = New-Object 'System.Windows.Forms.FormWindowState'
 	#endregion Generated Form Objects
 
@@ -74,9 +75,10 @@
 	$form1.Text = 'Superscript GUI V2.0'
 	$form1.add_Load($form1_Load)
     $form1.Opacity = 0.95
-    $form1icon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\wizard2.ico") 
+    $form1icon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\ros_app_icon.ico") 
     $form1.Icon = $form1icon
     $form1.StartPosition = [System.Windows.Forms.FormStartPosition]::CenterScreen
+    
 
 
 	#
@@ -86,7 +88,8 @@
 	$tabcontrol1.Controls.Add($tabpage2)
 	$tabcontrol1.Controls.Add($tabpage3)
 	$tabcontrol1.Controls.Add($tabpage4)
-	$tabcontrol1.Controls.Add($tabpage5)
+	$tabcontrol1.Controls.Add($tabpage6)
+    $tabcontrol1.Controls.Add($tabpage5)
 	$tabcontrol1.Alignment = 'Top'
 	$tabcontrol1.Location = '12, 12'
 	$tabcontrol1.Multiline = $True
@@ -122,7 +125,7 @@
     UseVisualStyleBackColor = $True
     }
 
-    # sub tab 1 Onboarding Main Label
+    # sub tab 1 Onboarding Main Label - Done in SP
     #================================================================
     $tabpage1LabelEnableUsers = New-Object System.Windows.Forms.Label -Property @{
     Text = "Enable Rubys"
@@ -132,7 +135,7 @@
     ForeColor = "Teal"
     BackColor = "White"}
     
-    # User Input Components
+    # User Input Components - Done in SP
     # ===============================================================
     # Onboarding Username Label
     $onboardUsernameLabel = New-Object System.Windows.Forms.Label -Property @{
@@ -141,7 +144,7 @@
     Location = '25,103'
     }
 
-    # Onboarding Username Textbox
+    # Onboarding Username Textbox - Done in SP
     #================================================================
     $onboardUsernameTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
@@ -149,7 +152,7 @@
     Location = '85,100'
     }
 
-    # Onboarding Team Name Label
+    # Onboarding Team Name Label - Done in SP
     #================================================================
     $onboardingTeamNameLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Team Name:"
@@ -157,7 +160,7 @@
     Location = '16,145'
     }
     
-    # Onboarding Team Name Textbox
+    # Onboarding Team Name Textbox - Done in SP
     #================================================================
     $onboardTeamTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
@@ -165,28 +168,32 @@
     Location = '85,143'
     }
     
-    # Onboarding Manager Name Label
+    # Onboarding Manager Name Label - Done in SP
+    #================================================================
     $onboardingManagerLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Manager:"
     Size = '52,30'
     Location = '32,186'
     }
     
-    # Onboarding Manager Name Textbox
+    # Onboarding Manager Name Textbox - Done in SP
+    #================================================================
     $onboardManagerTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
     Location = '85,185'
     }
     
-    # Onboarding Station Number Label
+    # Onboarding Station Number Label - Done in SP
+    #================================================================
     $onboardingstationLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Station:"
     Size = '43,30'
     Location = '40,232'
     }
     
-    # Onboarding Station Number Textbox
+    # Onboarding Station Number Textbox - Done in SP
+    #================================================================
     $onboardStationTB = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
@@ -196,7 +203,7 @@
     # Onboarding Sub Tab Buttons
     # ===============================================================
     
-    # New Ruby Main Label
+    # New Ruby Main Label - Done in SP
     #================================================================#
     $NewRubyMainLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "New Ruby"
@@ -206,7 +213,7 @@
     Location = '240,65'
     }
 
-    # Next Adventure Main Label
+    # Next Adventure Main Label - Done in SP
     #================================================================#
     $NextAdventureMainLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Next Adventure"
@@ -216,7 +223,7 @@
     Location = '240,210'
     }
 
-    # Next Adventure Sales Button
+    # Next Adventure Sales Button - Done in SP
     #================================================================#
     $NADVSales = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Next Adventure Sales '
@@ -302,7 +309,7 @@ Write-Host "
     
 })
 
-    # Next Adventure CH Button
+    # Next Adventure CH Button - Done in SP
     #================================================================#
     $NADVCH = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Next Adventure CH '
@@ -369,7 +376,8 @@ Add-ADGroupMember -Identity pearl_ic_users $username -confirm:$false
 Add-ADGroupMember -Identity PearlReportingServicesUsers $username -confirm:$false  
 Add-ADGroupMember -Identity TeamRuby $username -confirm:$false 
 Add-ADGroupMember -Identity SP_ProblemSolversHappinessMakers $username -confirm:$false 
-Add-ADGroupMember -Identity calendlee $username -confirm:$false 
+Add-ADGroupMember -Identity calendlee $username -confirm:$false
+Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $username -Confirm:$false
  
 
 # Remove user from associated AD groups
@@ -397,7 +405,8 @@ Else {
 
 })
     
-    # Sub Tab Onboarding PRL Recep Button
+    # Sub Tab Onboarding PRL Recep Button - Done in SP
+    #================================================================#
     $EnablePRLButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " PRL Receptionist "
@@ -506,7 +515,8 @@ Write-Host "$NewRubyUser Enabled!
 
 })
 
-    # Sub Tab Onboarding BVT Recep Button
+    # Sub Tab Onboarding BVT Recep Button - Done in SP
+    #================================================================#
     $EnableBVTButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " BVT Receptionist "
@@ -616,7 +626,8 @@ Write-Host "$NewRubyUser Enabled!
 
 })
 
-    # Sub Tab Onboarding KC Recep Button
+    # Sub Tab Onboarding KC Recep Button - Done in SP
+    #================================================================#
     $EnableKCButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " KC Receptionist "
@@ -720,7 +731,8 @@ Write-Host "$NewRubyUser Enabled!
     
 })
 
-    # Sub Tab Onboarding Sales Button
+    # Sub Tab Onboarding Sales Button - Done in SP
+    #================================================================#
     $EnableSalesButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Sales "
@@ -838,7 +850,8 @@ Write-Host "$NewRubyUser Enabled!
 })
 
 
-    # Sub Tab Onboarding Generic Admin Button
+    # Sub Tab Onboarding Generic Admin Button - Done in SP
+    #================================================================#
     $EnableGAButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Generic Admin "
@@ -859,6 +872,7 @@ Write-Host "$NewRubyUser Enabled!
                 Get-ADUser $NewRubyUser | Set-ADUser -CannotChangePassword $false -Verbose
                 
                 Add-ADGroupMember -Identity SEC_Sophos_Standard_WebFiltering $NewRubyUser -Verbose
+                Add-ADGroupMember -Identity PSO_Standard_Ruby_User_Password $NewRubyUser -Verbose
 
                 # .net form for a multi select box for adding new admin to multiple selected security groups or dristros
                 Add-Type -AssemblyName System.Windows.Forms
@@ -1081,7 +1095,8 @@ Write-Host "$NewRubyUser Enabled!
 })
 
 
-    # Verify AD User Button
+    # Verify AD User Button - Done in SP - Done in SP
+    #================================================================#
     $EnableVerifyButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Verify User "
@@ -1095,16 +1110,17 @@ Write-Host "$NewRubyUser Enabled!
 
            If ($VerifyADUser -ne $null) {
                                          $UserDoesExist = New-Object -ComObject Wscript.Shell -ErrorAction Stop
-                                         $UserDoesExist.Popup("$($onboardUsernameTB.Text) Does exist in AD!",0,"Verification Results") 
+                                         $UserDoesExist.Popup("$($onboardUsernameTB.Text) Does exist in AD!",0,"Verification Success!") 
                                          }
                                          Else { 
                                                $UserDoesntExist = New-Object -ComObject Wscript.Shell -ErrorAction Stop
-                                               $UserDoesntExist.Popup("$($onboardUsernameTB.Text) does not exist in AD!",0,"Verification Results")
+                                               $UserDoesntExist.Popup("$($onboardUsernameTB.Text) does not exist in AD!",0,"Verification Failure!")
                                                }
                                    })
 
 
-    # Sub Tab Onboarding Clear Textboxes Button
+    # Sub Tab Onboarding Clear Textboxes Button - Done in SP
+    #================================================================#
     $EnableClearButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = " Clear fields "
@@ -1236,6 +1252,7 @@ $OUSelectionDropdown.AutoCompleteCustomSource.AddRange(('OU=Billing,OU=Ruby User
            'OU=Misc Hourly Rubys,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Administrative,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Client Happiness,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Employee Engagement,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX HR,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Information Technology,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Receptionists,OU=Ruby Users,DC=ruby,DC=local',
@@ -1262,6 +1279,7 @@ $AdOUs = @(
            'OU=Misc Hourly Rubys,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Administrative,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Client Happiness,OU=Ruby Users,DC=ruby,DC=local',
+           'OU=PDX Employee Engagement,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX HR,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Information Technology,OU=Ruby Users,DC=ruby,DC=local',
            'OU=PDX Receptionists,OU=Ruby Users,DC=ruby,DC=local',
@@ -1293,9 +1311,9 @@ Size =  '240,230'
 $SelectGroupsListbox.SelectionMode = 'MultiSimple'
 
 $getADgroups = Get-ADGroup -SearchBase 'OU=Ruby Groups,DC=ruby,DC=local' -Filter 'ObjectClass -eq "group"' |
-               select Name | Sort-Object -Property Name
+               select Name, SamAccountName | Sort-Object -Property Name, SamAccountName
 
-               foreach ($SecGroup in $getADgroups){[void] $SelectGroupsListbox.Items.Add($SecGroup.name)}
+               foreach ($SecGroup in $getADgroups){[void] $SelectGroupsListbox.Items.Add($SecGroup.Name)}
                 
 
 # Form Template display grid preview
@@ -1430,7 +1448,8 @@ $MainForm.ShowDialog()
 }
 
 
-    # Onboarding Template Section Label
+    # Onboarding Template Section Label - Done in SP
+    #================================================================#
     $onboardingTemplateMainLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Enable Ruby via generated template"
     Font = $LabelFonts
@@ -1440,7 +1459,8 @@ $MainForm.ShowDialog()
     }
 
 
-    # Onboard via Template Username Textbox Label
+    # Onboard via Template Username Textbox Label - Done in SP
+    #================================================================#
     $OBTUserTextboxLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Username:"
     Location = '250,375'
@@ -1448,7 +1468,8 @@ $MainForm.ShowDialog()
     }
 
 
-    # Onboard via Template Username Textbox
+    # Onboard via Template Username Textbox - Done in SP
+    #================================================================#
     $OBTUserTextbox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "Lightgray"
     size = '120,20'
@@ -1456,7 +1477,8 @@ $MainForm.ShowDialog()
     }
 
 
-    # Onboard via Template Manager Username Label
+    # Onboard via Template Manager Username Label - Done in SP
+    #================================================================#
     $OBTManagerTextboxLabel = New-Object System.Windows.Forms.Label -Property @{
     AutoSize = $True
     Text = "Manager:"
@@ -1464,7 +1486,8 @@ $MainForm.ShowDialog()
     }
 
 
-    # Onboard via Template Manager Username Textbox
+    # Onboard via Template Manager Username Textbox - Done in SP
+    #================================================================#
     $OBTManagerTextbox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '120,20'
@@ -1472,22 +1495,26 @@ $MainForm.ShowDialog()
     }
 
 
-    # Onboard via Template Department Label
+    # Onboard via Template Recep Team Label - Done in SP
+    #================================================================#
     $OBTTeamLabel = New-Object System.Windows.Forms.Label -Property @{
     AutoSize = $True
-    Text = "Team Name:"
-    Location = '242,449'
+    Text = "Recep Team:"
+    Location = '238,449'
     }
 
 
-    # Onboard via Template Department Textbox
+    # Onboard via Template Recep Team Textbox - Done in SP
+    #================================================================#
     $OBTTeamTextbox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     size = '120,20'
     Location = '317,447'
     }
 
-    # Next Adventure Checkbox
+
+    # Next Adventure Checkbox - Done in SP
+    #================================================================#
     $OBTNACheckbox = New-Object System.Windows.Forms.CheckBox -Property @{
     Location = '450,373'
     Text = "Next Adventure?"
@@ -1496,7 +1523,8 @@ $MainForm.ShowDialog()
     ForeColor = 'Teal'
     }
 
-    # Return to roots Checkbox
+    # Return to roots Checkbox - Done in SP
+    #================================================================#
     $OBTRTRCheckbox = New-Object System.Windows.Forms.CheckBox -Property @{
     Location = '450,410'
     Text = "Return to Roots?"
@@ -1506,7 +1534,8 @@ $MainForm.ShowDialog()
     }
 
 
-    # Refresh template list button
+    # Refresh template list button - Done in SP
+    #================================================================#
     $RefreshTemplateListButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = "Refresh template list"
@@ -1525,26 +1554,32 @@ $MainForm.ShowDialog()
     })
 
   
-    # Template listbox selection
+    # Template listbox selection - Done in SP
+    #================================================================#
     $templateListBox = New-Object System.Windows.Forms.ListBox -Property @{
     Size = '200,200'
     Location = '22,370'
     }
     $PopulateTemplateListbox = gci "$($PSScriptRoot)\OnboardTemplates\*.csv"
-                             foreach ($template in $PopulateTemplateListbox) 
-                                     {[void] $templateListBox.Items.Add($template.name)}
+                               foreach ($template in $PopulateTemplateListbox) 
+                                       {[void] $templateListBox.Items.Add($template.name)}
     
-    # Create new template button
+    # Create new template button - Done in SP
+    #================================================================#
     $CreateTemplateButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = "Create template"
     ForeColor = "teal"
     Location = '250,510'
     }
-    $CreateTemplateButton.add_click({CreateUserTemplate})
+    $CreateTemplateButton.add_click({
+                                     CreateUserTemplate
+                                     [System.Windows.Forms.Application]::DoEvents()
+                                    })
 
 
-    # Remove template button
+    # Remove template button - Done in SP
+    #================================================================#
     $RemoveTemplateButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = "Remove template"
@@ -1570,14 +1605,15 @@ $MainForm.ShowDialog()
                                            
                                            $OBTRemoveinvalidInput = New-Object -ComObject Wscript.Shell -ErrorAction Stop
           
-                                           $OBTRemoveinvalidInput.Popup("No Template Selected to remove!",0,"Revmove Error: Missing Input")
+                                           $OBTRemoveinvalidInput.Popup("No Template Selected to remove!",0,"Remove Error: Missing Input")
                                     
                                           }
                                     
                                      })
 
 
-    # Review Selected Template Button
+    # Review Selected Template Button - Done in SP
+    #================================================================#
     $reviewSelectedTemplateButton = New-Object System.Windows.Forms.Button -Property @{
     Text = "Review Template"
     ForeColor = "Teal"
@@ -1599,7 +1635,8 @@ $MainForm.ShowDialog()
                                              })
 
 
-    # Enable Ruby via template button
+    # Enable Ruby via template button - Done in SP
+    #================================================================#
     $EnableRubyViaTemplateButton = New-Object System.Windows.Forms.Button -Property @{
     AutoSize = $True
     Text = "Enable Ruby"
@@ -1722,12 +1759,14 @@ Else {
       $OBTinvalidInput.Popup("Username, Manager Username, and department required!",0,"Enable Error: Missing Input")
      }
 
+
+[System.Windows.Forms.Application]::DoEvents()
 })
 
 
     #================================================================#
-    #                      Sub tab 2 Departing                       #
-    #================================================================#
+    #                      Sub tab 2 Departing                       # - Done in SP
+    #================================================================# 
     $subtabpageDepart = New-Object 'System.Windows.Forms.TabPage' -Property @{
     Location = '0, 15'
     Padding = '3, 3, 3, 3'
@@ -1736,7 +1775,7 @@ Else {
     Text = ' Departing '
     UseVisualStyleBackColor = $True}
 
-    # Import CSV Label
+    # Import CSV Label - Done in SP
     #=================================================================#
     $departLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = " Depart Rubys"
@@ -1745,7 +1784,7 @@ Else {
     ForeColor = "Teal"
     }
     
-    # Import CSV to depart Users
+    # Import CSV to depart Users Open File Dialog
     #=================================================================#
     $ImportDepartCSV = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
     InitialDirectory = '\\prlfs01\ISWizards\SuperScript\Departed'
@@ -1753,6 +1792,8 @@ Else {
     Filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
     }
     
+    # Import CSV Button - Done in SP
+    #=================================================================#
     $importcsvbutton = New-Object System.Windows.Forms.Button -Property @{
     Text = " Import CSV "
     ForeColor = "Teal"
@@ -1764,6 +1805,8 @@ Else {
                                 $showselectedCSV.appendtext($ImportDepartCSV.FileName)
                                 })
 
+    # Show Selected CSV Label - Done in SP
+    #=================================================================#
     $showselectedCSVLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Selected CSV to Depart Users"
     Location = '280,43'
@@ -1772,6 +1815,8 @@ Else {
     ForeColor = "Teal"
     }
 
+    # Show Selected CSV Textbox - Done in SP
+    #=================================================================#
     $showselectedCSV = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     ForeColor = "Green"
@@ -1780,7 +1825,7 @@ Else {
     ReadOnly = $True }
     
     
-    # Depart Ruby's Button
+    # Depart Ruby's Button - Done in SP
     #==================================================================#
     $departButton = New-Object System.Windows.Forms.Button -Property @{
     Text = " Depart "
@@ -1830,7 +1875,8 @@ Else {
     })
 
     
-    # Verify DataGridview Depart
+    # Verify DataGridview Depart - Done in SP
+    #==================================================================#
     $verifyDepartGrid = New-Object System.Windows.Forms.DataGridView -Property @{
     ColumnCount = 2
     ColumnHeadersVisible = $True
@@ -1845,7 +1891,8 @@ Else {
     $verifyDepartGrid.Columns[1].Width = 250
     
 
-    # verify imported CSV button
+    # verify imported CSV button - Done in SP
+    #==================================================================#
     $verifyDepartedButton = New-Object System.Windows.Forms.Button -Property @{
     Text = " Verify  "
     AutoSize = $True
@@ -1863,7 +1910,8 @@ Else {
            }
     })
 
-    # Clear imported Depart CSV
+    # Clear imported Depart CSV - Done in SP
+    #==================================================================#
     $clearImportedCSVButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Clear Import '
     AutoSize = $True
@@ -1887,7 +1935,8 @@ Else {
     
     })
 
-    # Set AD Account Expiration Date
+    # Set AD Account Expiration Date Function
+    #==================================================================#
     function SetAccountExpireDate {
     
 $ErrorActionPreference = 'silentlycontinue'
@@ -1914,7 +1963,9 @@ Font = "Georgia"
 ForeColor = "Teal"
 Location = "48,92"
 Height = 20
-Width = 80}
+Width = 80
+}
+$CalendarLabel.
 $form.Controls.Add($CalendarLabel)
 
 $calendar = New-Object Windows.Forms.MonthCalendar -Property @{
@@ -1943,51 +1994,57 @@ $form.CancelButton = $CancelButton
 $form.Controls.Add($CancelButton)
 
 $UsernameLabel = New-Object System.Windows.Forms.Label -Property @{
-Text = ‚ÄúUsername‚Äù
+Text = ìUsernameî
 Font = "Georgia"
 ForeColor = "Teal"
-Location = ‚Äú360, 90‚Äù
+Location = ì360, 90î
 Height = 20
-Width = 70}
+Width = 70
+}
 $form.Controls.Add($UsernameLabel)
 
 $UsernameTextBox = New-Object System.Windows.Forms.TextBox -Property @{
-Location = ‚Äú360, 120‚Äù
-Width = ‚Äú150‚Äù}
+Location = ì360, 120î
+Width = ì150î
+}
 $form.Controls.Add($UsernameTextBox)
 
 $TimePickerLabel = New-Object System.Windows.Forms.Label -Property @{
-Text = ‚ÄúTime‚Äù
+Text = ìTimeî
 Font = "Georgia"
 ForeColor = "Teal"
-Location = ‚Äú360, 160‚Äù
+Location = ì360, 160î
 Height = 22
-Width = 40}
+Width = 40
+}
 $form.Controls.Add($TimePickerLabel)
 
-$TimePicker = New-Object System.Windows.Forms.TextBox
-$TimePicker.Location = ‚Äú360, 195‚Äù
-$TimePicker.Width = ‚Äú150‚Äù
+$TimePicker = New-Object System.Windows.Forms.TextBox -Property @{
+Location = ì360, 195î
+Width = ì150î
+}
 $form.Controls.Add($TimePicker)
 
-$TimeZoneSelectLabel = New-Object System.Windows.Forms.Label
-$TimeZoneSelectLabel.Text = ‚ÄúTime Zone‚Äù
-$TimeZoneSelectLabel.Font = "Georgia"
-$TimeZoneSelectLabel.ForeColor = "Teal"
-$TimeZoneSelectLabel.Location = ‚Äú360, 230‚Äù
-$TimeZoneSelectLabel.Height = 22
-$TimeZoneSelectLabel.Width = 68
+$TimeZoneSelectLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = ìTime Zoneî
+Font = "Georgia"
+ForeColor = "Teal"
+Location = ì360, 230î
+Height = 22
+Width = 68
+}
 $form.Controls.Add($TimeZoneSelectLabel)
 
-$TimeZoneSelect = New-Object System.Windows.Forms.ComboBox
+$TimeZoneSelect = New-Object System.Windows.Forms.ComboBox -Property @{
+AllowDrop = $true
+Location = "360,260"
+Size = "110,50"
+}
 $TimeZoneSelect.DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDown
 $TimeZoneSelect.AutoCompleteCustomSource.Add("System.Windows.Forms");
 $TimeZoneSelect.AutoCompleteCustomSource.AddRange(("PST", "MST", "CST", "EST"));
 $TimeZoneSelect.AutoCompleteMode = [System.Windows.Forms.AutoCompleteMode]::SuggestAppend;
 $TimeZoneSelect.AutoCompleteSource = [System.Windows.Forms.AutoCompleteSource]::CustomSource;
-$TimeZoneSelect.AllowDrop = $true
-$TimeZoneSelect.Location = "360,260"
-$TimeZoneSelect.Size = "110,50"
 $TimeZoneSelect.Items.Add("PST")
 $TimeZoneSelect.Items.Add("MST")
 $TimeZoneSelect.Items.Add("CST")
@@ -2002,7 +2059,7 @@ if ($result -eq [Windows.Forms.DialogResult]::OK) {
     $user = $UsernameTextBox.Text
     $timezone = $TimeZoneSelect.SelectedItem
     $playExplosion = New-Object System.Media.SoundPlayer
-    $playExplosion.SoundLocation = "$PSScriptRoot\Source\cat.wav"
+    $playExplosion.SoundLocation = "$PSScriptRoot\Source\dominating.wav"
     
 
     try {
@@ -2016,7 +2073,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Catch {
            Write-Host "Invalid Date time provided, or bad username" -ForegroundColor Red
            }
-    
+    Pause
 
     }
     if($result -eq [Windows.Forms.DialogResult]::CANCEL){
@@ -2026,6 +2083,8 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     
 }
 
+    # Set AD Account Expiration Date Label - Done in SP
+    #==================================================================#
     $setExpireLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Set AD Account Expiration Date"
     Location = '30,300'
@@ -2034,6 +2093,93 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     ForeColor = "Teal"
     }
 
+    # Block o365 Login Label - Done in SP
+    #==================================================================#
+    $BlockMSOLLogin = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Block o365 login"
+    Location = '275,300'
+    Size = '220,30'
+    Font = $LabelFonts
+    ForeColor = "Teal"
+    }
+    
+    # Block O365 Login Textbox - Done in SP
+    #==================================================================#
+    $BlockMSOLoginTB = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "LightGray"
+    Size = '150,30'
+    Location = '275,350'
+    }
+
+    # Block O365 Login Button - Done in SP - Need to add Event Handler
+    #==================================================================#
+    $BlockMSOLoginButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = 'Block Login'
+    ForeColor = "Teal"
+    Autosize = $True
+    Location = '440,348'
+    }
+    $BlockMSOLoginButton.add_Click({
+    
+    
+
+    $IsMSOLModuleThere = Get-Module -Name MSOnline
+
+    if ($IsMSOLModuleThere -ne $false) {
+        
+        Connect-MsolService -Verbose
+
+        $DoesUserExistBasedOnUPN = get-aduser -Filter * -Properties * -SearchBase 'OU=Ruby Users,DC=ruby,DC=local' |
+                                   select UserPrincipalName, SamAccountName |
+                                   Where -Property UserPrincipalName -EQ "$($BlockMSOLoginTB.Text)"
+
+                                   if ($DoesUserExistBasedOnUPN -ne $null) {
+                                      Get-MsolUser -UserPrincipalName "$($BlockMSOLoginTB.Text)" | Set-MsolUser -BlockCredential $True -Verbose
+                                      $BlockMSOLoginSuccess = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+                                      $BlockMSOLoginSuccess.Popup("$($BlockMSOLoginTB.Text) o365 Login Blocked!",0,"Block Success!") 
+                                      }
+
+                                      Else {
+                                           $BlockMSOLoginFail = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+                                           $BlockMSOLoginFail.Popup("$($BlockMSOLoginTB.Text) does not exist!",0,"Block Failure!") 
+                                           }
+            
+        
+           
+           }
+
+           Else {
+             
+                 Install-Module Msolonline -Verbose -Force
+
+                 Connect-MsolService -Verbose
+
+                 $DoesUserExistBasedOnUPN = get-aduser -Filter * -Properties * -SearchBase 'OU=Ruby Users,DC=ruby,DC=local' |
+                                   select UserPrincipalName, SamAccountName |
+                                   Where -Property UserPrincipalName -EQ "$($BlockMSOLoginTB.Text)"
+
+                                   if ($DoesUserExistBasedOnUPN -ne $null) {
+                                      Get-MsolUser -UserPrincipalName "$($BlockMSOLoginTB.Text)" | Set-MsolUser -BlockCredential $True -Verbose
+                                      $BlockMSOLoginSuccess = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+                                      $BlockMSOLoginSuccess.Popup("$($BlockMSOLoginTB.Text) o365 Login Blocked!",0,"Block Success!") 
+                                      }
+
+                                      Else {
+                                           $BlockMSOLoginFail = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+                                           $BlockMSOLoginFail.Popup("$($BlockMSOLoginTB.Text) does not exist!",0,"Block Failure!") 
+                                           }
+                 
+
+                 
+
+             }
+    
+    
+    })
+
+    # Set AD Account Expiration Date Button - Done in SP - Need to Add 
+    # Click Event Handler to call function
+    #==================================================================#
     $setExpireButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Set Account Expiration '
     ForeColor = "Teal"
@@ -2041,7 +2187,8 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Location = '30,350'}
     $setExpireButton.add_Click({SetAccountExpireDate})
 
-    # Set AD Account Expiration Instructions
+    # Set AD Account Expiration Instructions Textbox - Done in SP - Need to Add AppendText Event Handler
+    #==================================================================#
     $expireInstructions = New-Object System.Windows.Forms.TextBox -Property @{
     ReadOnly = $True
     Multiline = $True
@@ -2075,7 +2222,7 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Text = ' Modify Ruby '
     UseVisualStyleBackColor = $True}
 
-    # Modify Ruby Main Label
+    # Modify Ruby Main Label - Done in SP
     #===============================================================#
     $ModifyRubyMainLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Modify Ruby / Additional Responsibilities"
@@ -2085,23 +2232,25 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     Location = '30,50'
     }
 
-    # Exchange / O365 Label
+    # Exchange / O365 Label - Done in SP
     #===============================================================#
     $ModifyRubyExchO365Label = New-Object System.Windows.Forms.Label -Property @{
     Text = "Exchange / O365"
     AutoSize = $True
     ForeColor = "Teal"
     Font = $LabelFonts
-    Location = '30,375'
+    Location = '30,175'
     }
 
-    # Extended Hours Access Username Label For Username Textbox
+    # Extended Hours Access Username Label For Username Textbox - Done in SP
+    #===============================================================#
     $ModifyRubyUsernameLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "Username:"
     Size = '60,30'
     Location = '30,85'}
 
-    # Extended Hours Access Username Textbox
+    # Extended Hours Access Username Textbox - Done in SP
+    #===============================================================#
     $ModifyRubyUsernameTextbox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '100,30'
@@ -2111,7 +2260,8 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     #                   Extended Hours Access                       #
     #===============================================================#
     
-    # Extended Hours Access Provision EH Access
+    # Extended Hours Access Provision EH Access - Done in SP - Need to add Click event handler
+    #===============================================================#
     $ExtHoursProvisionButton = New-Object System.Windows.Forms.Button -Property @{
     text = ' Provision EH Access '
     AutoSize = $True
@@ -2146,7 +2296,8 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     #==============================================================#
 
 
-    # Add user to Multiple Groups Button
+    # Add user to Multiple Groups Button - Done in SP - Need to add Click event handler
+    #===============================================================#
     $addUserToMultGroupsButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Add to AD groups '
     AutoSize = $True
@@ -2236,25 +2387,28 @@ Please Allow 1 hour for change to replicate." -ForegroundColor Green
     #                    Assign O365 Licenses                      #
     #==============================================================#
 
-    # Assign 0365 Licenses Username Label
+    # Assign 0365 Licenses Username Label - Done in SP
+    #===============================================================#
     $assigno365LicenseUserLabel = New-Object System.Windows.Forms.Label -Property @{
     Text = "UPN:"
     Size = '35,30'
-    Location = New-Object System.Drawing.Point(30,410)}
+    Location = New-Object System.Drawing.Point(30,210)}
 
-    # Assign 0365 Licenses Textbox
+    # Assign 0365 Licenses Textbox - Done in SP
+    #===============================================================#
     $assigno365LicenseTextBox = New-Object System.Windows.Forms.TextBox -Property @{
     BackColor = "LightGray"
     Size = '160,30'
-    Location = New-Object System.Drawing.Point(65,408)
+    Location = New-Object System.Drawing.Point(65,207)
     }
 
-    # Assign 0365 Licenses Button
+    # Assign 0365 Licenses Button - Done in SP - Need to add Click Event Handler
+    #===============================================================#
     $assigno365LicenseButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' Assign 0365 Licenses '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(63,440)
+    Location = New-Object System.Drawing.Point(63,240)
     }
     $assigno365LicenseButton.add_click({
     
@@ -2511,7 +2665,7 @@ Licenses have been assigned to $($o365upn)
     Text = ' Setup 0365 Email Signature '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(200,440)
+    Location = New-Object System.Drawing.Point(200,240)
     }
     $Setupo365EmailSig.add_click({
     
@@ -2646,7 +2800,7 @@ Signature should be created. Please check OWA to verify." -ForegroundColor Green
     Text = ' Remove Mailbox Rules '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(367,440)
+    Location = New-Object System.Drawing.Point(367,240)
     }
     $removeMailboxRules.add_click({
     
@@ -2759,6 +2913,904 @@ $getrules = Get-InboxRule -Mailbox $whatUser | select -Property name
           }
     
     })
+
+
+    #==============================================================#
+    #   Mass Modify Group Members / Additional Responsibilities    #
+    #==============================================================#
+
+    # Mass Modify Function
+    #==============================================================#
+    Function MassUserEditor {
+
+	#----------------------------------------------
+	#region Import the Assemblies and resources
+	#----------------------------------------------
+	[void][reflection.assembly]::Load('System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.ServiceProcess, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+
+    $LabelFonts = New-Object System.Drawing.Font("Verdana",8,[System.Drawing.FontStyle]::Bold)
+    $FormIcon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\ros_app_icon.ico")
+
+# Main Form Build
+#=============================================================================================================#
+$mainEditorForm = New-Object System.Windows.Forms.Form -Property @{
+Size = '800,420'
+Opacity = 0.95
+StartPosition = [System.Windows.Forms.FormStartPosition]::CenterScreen
+Icon = $FormIcon
+Name = "Ruby User Modifier"
+Text = "Ruby User Modifier"
+}
+
+
+# User List Label
+#=============================================================================================================#
+$UserListLabel = New-Object System.Windows.Forms.Label -Property @{
+Autosize = $true
+Text = "User List"
+Font = $LabelFonts
+Forecolor = "Teal"
+location = '15,20'
+}
+
+
+# AD user listbox
+#=============================================================================================================#
+$UserList = New-Object System.Windows.Forms.ListBox -Property @{
+size = '350,320'
+Location = '15,40'
+SelectionMode = 'MultiSimple'
+Font = $LabelFonts
+}
+
+$GetActiveAccounts = get-aduser -Filter * -Properties Name, SamAccountName, Title, Department, Manager, EmployeeID, Enabled, UserPrincipalName |
+                     Where {$_.title -notlike $NUll -and $_.department -notlike "$null" -and $_.manager -ne $null -and $_.employeeid -ne $Null -and $_.Enabled -eq $true} |
+                     Sort -Property SamAccountName |
+                     foreach {$UserList.Items.Add($_.samaccountname)}
+
+
+
+# Additional Responsibilities Label
+#=============================================================================================================#
+$AdditionalResponsibilitiesLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Additional Responsibilities"
+Autosize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '400,20'
+}
+
+
+# Extended Hours Button
+#=============================================================================================================#
+$ExtHoursButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Extended Hours"
+Autosize = $true
+Location = '400,40'
+Forecolor = "Teal"
+}
+$ExtHoursButton.add_click({
+
+if($UserList.SelectedItems -ne '') {
+
+  foreach($User in $UserList.SelectedItems) {
+       
+         Write-Host "`r`nProvisioning Extended hours access for $($User)" -ForegroundColor Magenta
+       
+         Add-ADGroupMember -Identity ('Client' + ' ' + 'Happiness') $User -Verbose
+         Add-ADGroupMember -Identity pearl_ch_users $User -Verbose
+         Add-ADGroupMember -Identity ('Extended' + ' ' + 'Hours') $User -Verbose
+
+  }
+    $ICadminPath = "C:\Program Files (x86)\Interactive Intelligence\ServerManagerApps\IAShellU.exe"
+
+    Start-Process -FilePath $ICadminPath
+
+    Write-Host "
++=====================================================================================+
+| Ruby added to required security groups and distro lists for Extended hours Access.  |
+| Please make sure you add the user to the following Roles and Workgroups in IC Admin |
+|                                                                                     |
+| Workgroups: Park Queue                                                              |
+|                                                                                     |
+| Roles: Extended Hours, Parker                                                       |
++=====================================================================================+" -ForegroundColor Green
+
+} Else {
+        
+        $NoUsersSelected = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersSelected.Popup("No Users Selected!",0,"Invalid Input - Extended Hours") 
+
+       }
+
+}) # End of event handler scriptblock
+
+
+
+# Group Drop Down Label
+#=============================================================================================================#
+$GroupsDropdownLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Group"
+Autosize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '400,131'
+}
+
+
+
+# AD group drop down list
+#=============================================================================================================#
+$AddToGroupList = New-Object System.Windows.Forms.ComboBox -Property @{
+DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDown
+Location = '400,150'
+Size = '220,50'
+DropDownHeight = '300'
+}
+$AddToGroupList.AutoCompleteMode = [System.Windows.Forms.AutoCompleteMode]::SuggestAppend;
+$AddToGroupList.AutoCompleteSource = [System.Windows.Forms.AutoCompleteSource]::CustomSource;
+
+
+$getADgroups = Get-ADGroup -SearchBase 'OU=Ruby Groups,DC=ruby,DC=local' -Filter 'ObjectClass -eq "group"' |
+               select Name, SamAccountName | Sort-Object -Property Name, SamAccountName
+
+               foreach($GroupItem in $getADgroups) {
+                                                    # Add Items to dropdown / ComboBox
+                                                    $AddToGroupList.Items.Add($GroupItem.SamAccountName)
+                                                    
+                                                    # Add Items to Auto Complete Source
+                                                    $AddToGroupList.AutoCompleteCustomSource.Add($GroupItem.SamAccountName)
+                                                   }
+                                                   clear
+
+
+# Add to Group Button
+#=============================================================================================================#
+$MassAddtoGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Add Users"
+Autosize = $true
+Forecolor = "Teal"
+Location = '400,180'
+}                      
+$MassAddtoGroupButton.add_click({
+
+if(($UserList.SelectedItem -ne $null -and $AddToGroupList.SelectedItem -ne $null) -or ($UserList.SelectedItems -ne $null -and $AddToGroupList.SelectedItem -ne $null)){
+
+    foreach($userItem in $UserList.SelectedItems) {
+                                                  
+                                                  Write-Host "Adding $($userItem) to the group $($AddToGroupList.SelectedItem)" -ForegroundColor Green
+                                                  Add-ADGroupMember -Identity $AddToGroupList.SelectedItem $userItem -Verbose
+
+                                                  }
+
+
+} Else {
+        
+        $NoUsersToAdd = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersToAdd.Popup("No Users or Group Selected!",0,"Invalid Selection - Add Users Error") 
+
+
+       }
+
+       #$SuccessUsersToAdd = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       #$SuccessUsersToAdd.Popup("Selected User / Users Removed!",0,"Success - Removed Users from group $($AddToGroupList.SelectedItem)") 
+
+})
+
+
+
+# Remove from Group Button
+#=============================================================================================================#
+$MassRemoveFromGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Remove Users"
+Autosize = $true
+Forecolor = "Teal"
+Location = '480,180'
+}                      
+$MassRemoveFromGroupButton.add_click({
+
+if(($UserList.SelectedItem -ne $null -and $AddToGroupList.SelectedItem -ne $null) -or ($UserList.SelectedItems -ne $null -and $AddToGroupList.SelectedItem -ne $null)){
+
+    foreach($userItemR in $UserList.SelectedItems) {
+                                                  
+                                                   Write-Host "Removing $($userItemR) from the selected group $($AddToGroupList.SelectedItem)" -ForegroundColor Magenta
+                                                  
+                                                   Remove-ADGroupMember $AddToGroupList.SelectedItem -Member $userItemR -Confirm:$false -Verbose
+
+                                                  
+                                                   }
+
+
+} Else {
+        
+        $NoUsersToRemove = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersToRemove.Popup("No Users or Group Selected!",0,"Invalid Selection - Remove Users Error") 
+
+
+       }
+
+       #$SuccessUsersToRemove = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       #$SuccessUsersToRemove.Popup("Selected User / Users Removed!",0,"Success - Remove Users from group $($AddToGroupList.SelectedItem)") 
+
+})
+
+
+
+# Exchange Mass edit Section Label
+#=============================================================================================================#
+$ExchangeMassEditLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Exchange and O365"
+Autosize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '400,270'
+}
+
+
+
+
+# Setup Outlook Online Email Signature Button
+#=============================================================================================================#
+$MassSetupEmailSigButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Setup o365 Email Signature"
+Autosize = $true
+Forecolor = "Teal"
+Location = '400,290'
+}
+$MassSetupEmailSigButton.add_click({
+
+if($UserList.SelectedItem -ne $null -or $UserList.SelectedItems -ne $null) {
+
+#clear
+
+# location of signature template
+$LocationOfSignature= "\\prlfs01\PDQ_Shared_DB\Repository\Signature_Creation\OWA_SignatureRebrand.html"
+
+# see if already connected to exchange online
+$AmIConnectedToExchangeOnline= Get-PSSession | where {$_.ConfigurationName -eq "Microsoft.exchange"}
+
+
+    IF ($AmIConnectedToExchangeOnline -eq $null -or $AmIConnectedToExchangeOnline.State -eq "Closed")
+        {
+        #Connect to Exchange Online
+        
+        $userCredentials= Get-Credential -message "Enter Exchange Online Email/Credentials to continue" 
+        
+        $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $UserCredentials -Authentication Basic -AllowRedirection
+        
+        Import-PSSession $Session -Verbose
+         
+
+        }
+
+#clear
+
+#Import the template for the signature
+
+$importSignatureTemplate= Get-Content $LocationOfSignature
+
+   
+            foreach($SigUser in $UserList.SelectedItems) {
+            
+            
+            $OWA_Sigs_To_Update = "$($SigUser)@ruby.com"
+
+            $GetADUserInfo= Get-ADUser -Filter * -Properties title,department,enabled,emailaddress | where {$_.title -notlike $Null -and $_.department -notlike $null} -Verbose
+
+            $UserDetails= $GetADUserInfo | where {$_.UserPrincipalName -eq $OWA_Sigs_To_Update} -Verbose
+
+            $UserDetails
+
+            Write-host "Found $($SigUser) in Active Directory." -ForegroundColor Magenta
+
+            FOREACH ($signatureUser in $UserDetails)
+    {
+
+ #Generated Signature
+
+ $Signature= @()
+
+
+ # Find the POWERSHELLRECPNAME, and the POWERSHELLRECPTEAMNAME and replace those with the name and the team of the Receptionist.
+    Foreach ($line in $importSignatureTemplate)
+        {
+
+            # See if $line contains "POWERSHELLRECPNAME and replace it with the receptionists name.
+            
+            IF ($line -like "* POWERSHELLRECPNAME *")
+                {
+                $signature+= $line.Replace("POWERSHELLRECPNAME","$($signatureUser.name)")
+                }
+            
+            # See if $line contains "POWERSHELLRECEPTEAMNAME and replace it with the Receptionists Team Name. 
+            
+            IF ($line -like "* POWERSHELLRECPTEAMNAME *")
+                {
+                $signature+=$line.Replace("POWERSHELLRECPTEAMNAME","$($signatureUser.title)")
+                }
+
+            IF ($line -notlike "* POWERSHELLRECPTEAMNAME *" -and $line -notlike "* POWERSHELLRECPNAME *")
+                {
+                $signature+=$line
+                }
+
+        }
+          
+            Set-MailboxMessageConfiguration $signatureUser.UserPrincipalName -AutoAddSignature $true -SignatureHtml $Signature -DefaultFontColor "#352E1B"
+
+     }
+    
+#clear
+
+write-host "`r`nSignatures should be created for $($SigUser) . Please check OWA to verify." -ForegroundColor Green
+
+
+}
+
+Remove-PSSession $Session
+
+
+
+
+} Else {
+        
+        $NoUsersToSetupSig = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersToSetupSig.Popup("No User / Users Selected!",0,"Invalid Selection - Selection Error") 
+
+       }
+
+
+
+
+})
+
+
+
+
+
+
+# View Group Button
+#=============================================================================================================#
+$ViewGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "View Group"
+Autosize = $true
+Forecolor = "Teal"
+Location = '575,180'
+}                      
+$ViewGroupButton.add_click({
+
+clear
+
+
+if($AddToGroupList.SelectedItem -ne $null) {
+
+# View Group info Form
+#=======================================================================#
+$GroupForm = New-Object System.Windows.Forms.Form -Property @{
+Opacity = 0.95
+StartPosition = [System.Windows.Forms.FormStartPosition]::CenterScreen
+Icon = $FormIcon
+Name = "Ruby User Modifier"
+Size = '400,500'
+Text = "Group info"
+}
+
+$ListGroupMembers = Get-ADGroupMember -identity "$($AddToGroupList.SelectedItem)" -Recursive | 
+                    foreach{ get-aduser $_ -Properties SamAccountName } | 
+                    Select SamAccountName
+
+
+# Group Name Label
+#=======================================================================#
+$groupviewLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Group Name: $($AddToGroupList.SelectedItem)"
+AutoSize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '10,10'
+}
+
+
+
+
+# Member List Label
+#=======================================================================#
+$GroupMembersLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Current Members:"
+Font = $LabelFonts
+Forecolor = "Teal"
+Autosize = $true
+Location = '10,100'
+}
+
+
+
+# Goup Members List Textbox
+#=======================================================================#
+$groupMemberListTextBox = New-Object System.Windows.Forms.RichTextBox -Property @{
+Size = '200,200'
+Location = '10,120'
+BackColor = "LightGray"
+ReadOnly = $True
+Multiline = $True
+Font = $LabelFonts
+}
+
+foreach($groupmember in $ListGroupMembers){
+                                           $groupMemberListTextBox.AppendText("`n$($groupmember.SamAccountName)")
+                                          }
+
+
+
+# Export Group Members to list Button
+#=======================================================================#
+$exportgroupmemberlistbutton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Export Member list"
+Autosize = $true
+Forecolor = "Teal"
+Location = '243,118'
+}
+$exportgroupmemberlistbutton.add_click({
+
+# Save CSV Save File Dialog
+#==========================#
+$SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog -Property @{
+initialDirectory = "c:\"
+filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
+FileName = "$($AddToGroupList.SelectedItem)"
+}
+$saveFile = $SaveFileDialog.ShowDialog()
+
+if ($saveFile -eq [System.Windows.Forms.DialogResult]::OK) {
+
+   foreach ($member in $ListGroupMembers) {"$($member.SamAccountName)" | Out-File "$($SaveFileDialog.FileName)" -Append -Verbose}
+
+   clear
+
+   $successfulExportNotif = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+
+   $successfulExportNotif.Popup("Exported Members list for $($AddToGroupList.SelectedItem)!",0,"File Name: $($SaveFileDialog.FileName)") 
+
+} Elseif ($saveFile -eq [System.Windows.Forms.DialogResult]::Cancel) {
+        
+        $CancelExportNotif = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+
+        $CancelExportNotif.Popup("Cancelled export for $($AddToGroupList.SelectedItem)!",0,"Export Cancelled: $($SaveFileDialog.FileName)") 
+
+       }
+
+})
+
+
+
+$groupinfoCompArray = @(
+                       $groupviewLabel,
+                       $GroupMembersLabel,
+                       $groupMemberListTextBox,
+                       $exportgroupmemberlistbutton
+                       )
+                       foreach($infoComp in $groupinfoCompArray){$GroupForm.Controls.Add($infoComp)}
+
+
+
+
+
+$showGroupForm = $GroupForm.ShowDialog()
+
+} Else {
+        
+        $NoGroupSelected = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoGroupSelected.Popup("No Group Selected!",0,"Invalid Selection - View Group") 
+
+
+       }
+
+
+
+
+})
+                      
+
+
+
+
+
+
+
+
+# Form Components array / build
+#==============================#
+
+$compntArray = @(
+                 $UserListLabel,
+                 $UserList,
+                 $GroupsDropdownLabel,
+                 $AddToGroupList,
+                 $AdditionalResponsibilitiesLabel,
+                 $ExtHoursButton,
+                 $MassAddtoGroupButton,
+                 $MassRemoveFromGroupButton,
+                 $ViewGroupButton,
+                 $ExchangeMassEditLabel,
+                 $MassSetupEmailSigButton
+                )
+                foreach ($compnt in $compntArray) {
+                                                   $mainEditorForm.Controls.Add($compnt)
+                                                  }
+
+
+
+
+
+
+
+
+$result = $mainEditorForm.ShowDialog()
+
+[System.GC]::Collect()
+$error.Clear()
+
+
+}
+
+    
+    
+    # Mass Modify Label
+    #==============================================================#
+    $MassModifyLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Mass Modify Group Memberships / Provision Additional Responsibilities"
+    AutoSize = $True
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Location = '30,350'
+    }
+
+
+    # Mass Modify Button
+    #==============================================================#
+    $MassModifyButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Launch"
+    Autosize = $True
+    Forecolor = "Teal"
+    Location = '30,380'
+    }
+    $MassModifyButton.add_click({MassUserEditor})
+
+    #==============================================================#
+    #             Mass Assign Yammer Licenses VIA CSV              #
+    #==============================================================#
+
+    # Mass Assign Yammer Feature Licenses Label
+    #==============================================================#
+    $MassAssignYammerLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Mass Assign Yammer Licenses"
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Autosize = $True
+    Location = '30,430'
+    }
+
+    # Mass Assign Yammer License Function
+    #==============================================================#
+    Function AssignYammerFeatureLicense {
+
+$ErrorActionPreference = 'SilentlyContinue'
+
+
+[void][reflection.assembly]::Load('System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+[void][reflection.assembly]::Load('System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+[void][reflection.assembly]::Load('System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+[void][reflection.assembly]::Load('System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+[void][reflection.assembly]::Load('System.ServiceProcess, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+
+
+
+# Connect to MSOnline - Check if module exists, Installs Module if missing
+#=========================================================================
+$DoesMSOlineModuleExist = Get-Module -Name MSOnline
+
+if ($DoesMSOlineModuleExist -ne $null) {
+                                        Connect-MsolService
+                                       }
+
+   Else {
+         Write-Host "MSOline Module missing, Installing......" -ForegroundColor Yellow
+         Install-Module -Name MSOline -Verbose -Force -ErrorAction SilentlyContinue
+         Connect-MsolService
+        }
+
+#Import CSV for receps being updated
+#=================================== 
+$importcsvFile = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
+           InitialDirectory = '\\prlfs01\ISWizards\SuperScript\Tools\MassAssignYammerLicenses' 
+           Filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
+           }
+           $importcsvFile.ShowDialog()
+
+Import-Csv $importcsvFile.FileName | ForEach-Object {
+
+
+$UPN = $_.UserPrincipalName
+$LicenseDetails = (Get-MsolUser -UserPrincipalName $UPN).Licenses
+
+ForEach ($License in $LicenseDetails) {
+                                       $DisabledOptions = @()
+                                       $License.ServiceStatus | ForEach {
+     
+     If ($_.ProvisioningStatus -eq "Disabled" -and $_.ServicePlan.ServiceName -notlike "*YAMMER*") { 
+                                                                                                    
+                                                                                                    $DisabledOptions += "$($_.ServicePlan.ServiceName)" 
+                                                                                                    
+                                                                                                    } 
+                                                                        }
+   
+   $LicenseOptions = New-MsolLicenseOptions -AccountSkuId $License.AccountSkuId -DisabledPlans $DisabledOptions
+   
+   Set-MsolUserLicense -UserPrincipalName $UPN -LicenseOptions $LicenseOptions
+
+   
+
+}
+Write-Host "Yammer Feature License Assigned for $($UPN)!" -ForegroundColor Green
+}
+
+}
+
+    # Mass Assign Yammer Licenses via CSV button
+    #==============================================================#
+    $MassAssignYammerButton = New-Object System.Windows.Forms.Button -Property @{
+    Autosize = $True
+    Location = '30,460'
+    ForeColor = "Teal"
+    Text = 'Mass Assign'
+    }
+    $MassAssignYammerButton.add_click({AssignYammerFeatureLicense})
+
+
+    #======================================================================#
+    #   Verify / Refresh Frontline Exchange and Teams Retention Policies   #
+    #======================================================================#
+
+    # Verify / Refresh Retention Policy Function
+    #==============================================================#
+    Function AssignRetentionPolicies {
+
+$ErrorActionPreference = 'silentlycontinue'
+
+clear
+
+Write-Host """
++====================================================+
+|                                                    |
+|       Retention Policy Assignment Script           |
+|                                                    |
+| Steps:                                             |
+|                                                    |
+|      1. Provide UPN credentials at prompt          |
+|                                                    |
+| Notes: This script will apply retention policies   |
+|        for Exchange and Teams. This script should  |
+|        be run every 30 days.                       |
+|                                                    |
+|                                                    |
++====================================================+
+""" -ForegroundColor Green
+
+
+# Provide Admin Credentials
+#==========================
+$LoginCredentials = Get-Credential
+
+
+# Connection URI variables
+#=========================
+$EXOnlineURI = 'https://outlook.office365.com/powershell-liveid/'
+$ComplianceURI = 'https://ps.compliance.protection.outlook.com/powershell-liveid/'
+
+
+# Retention Policy Variables
+#===========================
+$MailboxRetentionPolicy = "Ruby - F3 User Remove/Delete emails that are 1 year and older"
+$TeamsRetentionPolicy = "Ruby - Teams - 1:1 Chat F1  Standard Retention Policy"
+
+
+
+# Query AD users based on Criteria
+#=================================
+$QueryUsers = get-aduser -Filter * -Properties title,department,enabled,employeeid,emailaddress,manager,PasswordLastSet,PasswordExpired,DistinguishedName,Created,UserPrincipalName,SamAccountName |
+              Where {$_.title -notlike $NUll -and $_.department -notlike "$null" -and $_.manager -ne $null -and $_.employeeid -ne $Null -and $_.Enabled -eq $true}
+
+$FrontLineEmployees = ($QueryUsers | where {$_.title -like "Chat Specialists (*)" -or $_.title -like "* Receptionist" })
+
+
+# Verify AzureAD Module exists and connect
+#=======================================================
+$DoesAzureADModuleExist = Get-Module -Name AzureAD
+
+if ($DoesAzureADModuleExist -ne $null) {
+                                        Connect-AzureAD
+                                       }
+
+   Else {
+         Write-Host "AzureAD Module missing, Installing......" -ForegroundColor Yellow
+         Install-Module -Name AzureAD -Verbose -Force
+         Connect-AzureAD
+        }
+
+
+
+# Exchange Online PS Session initializaion
+#=========================================
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri $EXOnlineURI -Credential $LoginCredentials -Authentication Basic -AllowRedirection
+Import-PSSession $Session
+
+$ErrorActionPreference = 'silentlycontinue'
+
+foreach ($FrontEmp in $FrontLineEmployees){
+
+# Font Color for template
+#========================
+$RedFontWarning = "color:red"
+
+# Email HTMLBody
+#===============
+$emailBody = "
+<p style=$($RedFontWarning)>Retention policy applied for  $($FrontEmp.SamAccountName)
+<br>
+<p><b>Qualifying Conditions:</b> User is a Frontline Employee and assigned an F3 license
+<br>
+<p>Applied the following Retention Policies: 
+<br>
+<p><b>Exchange:</b> Ruby - F3 User Remove/Delete emails that are 1 year and older
+<br>
+<p><b>Teams:</b> Ruby - Teams - 1:1 Chat F1  Standard Retention Policy
+<br>
+</p>
+</p>
+</p>
+</p>
+</p>
+"
+
+
+# Check Azure AD user to verify if user has an E3 or F3 license
+#==============================================================
+$VerifyE3License = Get-AzureADUserLicenseDetail -ObjectId $FrontEmp.UserPrincipalName | 
+                   Select SkuID, SkuPartNumber |
+                   Where SkuPartNumber -EQ "ENTERPRISEPACK" -Verbose
+
+$verifyF3License = Get-AzureADUserLicenseDetail -ObjectId $FrontEmp.UserPrincipalName | 
+                   Select SkuID, SkuPartNumber |
+                   Where SkuPartNumber -EQ "SPE_F1" -Verbose
+
+
+# Verify if user already has Retention Policy assigned
+#=====================================================
+$VerifyRetentionPolicy = Get-Mailbox -Identity "$($FrontEmp.SamAccountName)" |
+                         Select RetentionPolicy
+
+
+
+# If user has an F3 License Set Exchange Retention Policy
+#========================================================
+if ($verifyF3License -ne $null) {
+
+                                # If User does not have a retention policy already applied
+                                #=========================================================
+                                if ($VerifyRetentionPolicy.RetentionPolicy -ne $MailboxRetentionPolicy) {
+
+                                # Send message to Host Console, Apply Retention Policy, and send email notification to wizards distro
+                                #====================================================================================================
+                                Try {
+                                     
+                                     Write-Host "$($FrontEmp.SamAccountName) has an F3 License. Applying Retention Policy" -ForegroundColor Green
+                                     Set-Mailbox $FrontEmp.SamAccountName -RetentionPolicy $MailboxRetentionPolicy -Verbose
+                                     Send-MailMessage -SmtpServer PRLEMC01 -Body $emailBody -BodyAsHtml -From RetentionPolicyNotifs@ruby.com -To wizards@ruby.com -Subject "Retention Policy Applied for $($FrontEmp.SamAccountName)" -Priority High -Verbose
+
+                                    }
+
+                                    Catch {
+                                    
+                                           Write-Host "$($FrontEmp.SamAccountName) is already a member!" -ForegroundColor Red
+                                          
+                                          }
+                           
+                                }
+                                
+                                # If user is already assigned a retention policy and has an F3 License
+                                #=====================================================================
+                                Else {
+                                      Write-Host "$($FrontEmp.SamAccountName) already is assign the Retention Policy:`r`n$($MailboxRetentionPolicy)" -ForegroundColor Cyan
+                                     }
+                              
+                                }
+
+# If user has an E3 License - Remove Retention Policy
+#====================================================
+if ($VerifyE3License -ne $null) {
+
+                                Try {
+                               
+                                     Write-Host "$($FrontEmp.SamAccountName) has an E3 License. Removing Retention Policy" -ForegroundColor Yellow
+                                     Set-Mailbox $FrontEmp.SamAccountName -RetentionPolicy $null -Verbose
+                               
+                                    }
+
+                                    Catch {
+                                   
+                                          Write-Host "Policy was already removed!" -ForegroundColor Red
+                                   
+                                          }
+    
+    
+    
+    
+    }
+
+}
+
+
+# Gets and removes Exchange PSSession
+#====================================
+Get-PSSession | Remove-PSSession
+
+clear
+
+# Security and Compliance Online PS Session initializaion
+#========================================================
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri $ComplianceURI -Credential $LoginCredentials -Authentication Basic -AllowRedirection
+Import-PSSession $Session -DisableNameChecking
+
+Write-Host "Applying the following teams retention policy: `r`n$($TeamsRetentionPolicy)`r`n" -ForegroundColor Green
+
+foreach ($teamsFrontuser in $FrontLineEmployees) {
+                                 
+                                 Try {
+                                      Write-Host "Applying Teams Retention Policy for $($teamsFrontuser.SamAccountName)" -ForegroundColor Magenta
+                                      Set-TeamsRetentionCompliancePolicy -Identity $TeamsRetentionPolicy -AddTeamsChatLocation $teamsFrontuser.SamAccountName -RemoveTeamsChatLocation All -Verbose
+                                     }
+                                     
+                                     catch {
+                                            Write-Host "$($teamsFrontuser.SamAccountName) is already a member!" -ForegroundColor Red
+                                           }
+                                 
+                                 }
+
+
+Get-PSSession | Remove-PSSession
+
+}
+
+    # Verify / Refresh Frontline Retention Policies Label
+    #==============================================================#
+    $RefreshRetentionPolicyLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Refresh Frontline Ruby Exchange and Teams Retention Policies"
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Autosize = $True
+    Location = '30,510'
+    }
+
+    # Verify / Refresh Frontline Retention Policies Button
+    #==============================================================#
+    $RefreshRetentionPolicyButton = New-Object System.Windows.Forms.Button -Property @{
+    Autosize = $True
+    Location = '30,540'
+    ForeColor = "Teal"
+    Text = "Refresh Policies"
+    }
+    $RefreshRetentionPolicyButton.add_click({AssignRetentionPolicies})
                                       
     #================================================================#
     # Sub tab controller for User management tab                     #
@@ -2832,6 +3884,9 @@ $getrules = Get-InboxRule -Mailbox $whatUser | select -Property name
                                   $departButton,
                                   $clearImportedCSVButton,
                                   $setExpireLabel,
+                                  $BlockMSOLLogin,
+                                  $BlockMSOLoginTB,
+                                  $BlockMSOLoginButton,
                                   $setExpireButton,
                                   $expireInstructions
                                   )
@@ -2857,7 +3912,13 @@ $getrules = Get-InboxRule -Mailbox $whatUser | select -Property name
                                    $assigno365LicenseTextBox,
                                    $assigno365LicenseButton,
                                    $Setupo365EmailSig,
-                                   $removeMailboxRules
+                                   $removeMailboxRules,
+                                   $MassModifyLabel,
+                                   $MassModifyButton,
+                                   $MassAssignYammerLabel,
+                                   $MassAssignYammerButton,
+                                   $RefreshRetentionPolicyLabel,
+                                   $RefreshRetentionPolicyButton
                                    )
           
           foreach ($modComp in $ModifyRubyComponentsArray)
@@ -3008,7 +4069,7 @@ Else {
 
     # Ros Picture
     #===============================================================================#
-    $ROSIMG = [System.Drawing.Image]::FromFile("$PSScriptRoot\Source\rubyicon_outline.ico")
+    $ROSIMG = [System.Drawing.Image]::FromFile("$PSScriptRoot\Source\ros_app_icon.jpg")
     $ReinstallRosPicture = New-Object System.Windows.Forms.PictureBox -Property @{
     BackgroundImage = $ROSIMG
     size = '96,97'
@@ -3142,10 +4203,12 @@ Else {
                      $ReinstallRosButton,
                      $ReinstallRosUnstructions
                      )
+         
          foreach ($RubyOSCcomp in $RubyOSArray)
                  {
                  $subtabpageRubyOS.Controls.Add($RubyOSCcomp)
                  }
+                 
     
     
     
@@ -3714,29 +4777,12 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     Location = New-Object System.Drawing.Point(170,50)}
     $LandeskAdminButton.add_click({start chrome.exe http://roxy.ruby.local:81/Default.aspx})
 
-    # Marketo Admin Portal Button
-    $MarketoAdminButton = New-Object System.Windows.Forms.Button -Property @{
-    Text = ' Marketo Admin Portal '
-    AutoSize = $True
-    ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(308,50)
-    }
-    $MarketoAdminButton.add_click({start chrome.exe https://app-ab23.marketo.com})
-
-    # OpsGenie Admin Portal Button
-    $OpgenieAdminButton = New-Object System.Windows.Forms.Button -Property @{
-    Text = ' OpsGenie Admin Portal '
-    AutoSize = $True
-    ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(445,50)}
-    $OpgenieAdminButton.add_click({start chrome.exe https://app.opsgenie.com/})
-
     # O365 Admin Portal Button
     $O365AdminButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' O365 Admin Portal '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(20,90)}
+    Location = New-Object System.Drawing.Point(307,50)}
     $O365AdminButton.add_click({start chrome.exe https://portal.office.com/adminportal/})
 
     # Sophos Admin Console Button
@@ -3744,23 +4790,15 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     Text = ' Sophos Admin Portal '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object system.drawing.point(143,90)}
+    Location = New-Object system.drawing.point(430,50)}
     $SophosAdminButton.add_click({start chrome.exe https://central.sophos.com/manage/login})
-
-    # WHD Portal
-    $WHDPortal = New-Object System.Windows.Forms.Button -Property @{
-    Text = ' WHD Portal '
-    AutoSize = $True
-    ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(276,90)}
-    $WHDPortal.add_click({start chrome.exe https://whd.callruby.com/})
 
     # 1 Password Portal Button
     $1PasswordAdminButton = New-Object System.Windows.Forms.Button -Property @{
     Text = ' 1 Password Portal '
     AutoSize = $True
     ForeColor = "Teal"
-    Location = New-Object System.Drawing.Point(364,90)}
+    Location = New-Object System.Drawing.Point(20,90)}
     $1PasswordAdminButton.add_click({start chrome.exe https://start.1password.com/signin?l=en})
 
 
@@ -3823,6 +4861,155 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     $KCAdminConsoleButton.add_click({start chrome.exe https://10.3.2.9/})
 
 
+    #=============================================================================#
+    #                        Superscript Logs Viewer                              #
+    #=============================================================================#
+
+    # Superscript Log Explorer Section Label
+    $ssLogViewerLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "SuperScript Log Viewer"
+    Font = $LabelFonts
+    ForeColor = "Teal"
+    AutoSize = [boolean]$true
+    Location = '20,330'
+    }
+
+    # Log Explorer Function
+    Function SSLogExplorer {
+
+    [void][reflection.assembly]::Load('System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.ServiceProcess, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+
+    $LogExicon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\ros_app_icon.ico")
+
+    # Main Form
+    #===============================
+    $LogExmainForm = New-Object System.Windows.Forms.Form -Property @{
+    Size = '1600,600'
+    Icon = $LogExicon
+    Text = [String]"SuperScript Log Explorer"
+    }
+    
+    
+    # Query Log Files in Log Archive
+    #===============================
+    $QueryLogs = gci -Path "\\prlfs01\iswizards\superscript\Logs\Log-Archive" -Recurse |
+    Where {$_.Extension -eq ".txt"} | 
+    Select -Property Directory, Name, CreationTime |
+    Sort-Object -Property CreationTime -Descending
+
+    
+    # Listbox .net object
+    #============================== 
+    $LogListBox = New-Object System.Windows.Forms.ListBox -Property @{
+    Location = '16,15'
+    Size = '450,500'
+    }
+    $LogCount = [Int32]0
+    foreach ($Log in $QueryLogs) {
+                                  $LogCount++
+                                  [void] $LogListBox.Items.Add("$($Log.Directory)\$($Log.Name)")
+                                  }
+
+    
+    # Log Viewer Textbox .net object
+    #==============================
+    $LogViewTB = New-Object System.Windows.Forms.TextBox -Property @{
+    ReadOnly = [boolean]$true
+    BackColor = 'black'
+    Location = '480,15'
+    Size = '1092,500'
+    Multiline = [boolean]$true
+    ForeColor = 'lightgreen'
+    Wordwrap = [boolean]$true
+    Scrollbars = 'Vertical'
+    }
+    
+    
+    # Open Log .net Button
+    #==============================
+    $OpenLogButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Open Log"
+    Autosize = [boolean]$true
+    Location = '310,520'
+    }
+    $OpenLogButton.add_click({
+                              $LogViewTB.Clear()
+
+                              $SelectToString = "$($LogListBox.SelectedItem)"
+
+                              foreach($line in Get-Content -Path "$($SelectToString)"){
+                              
+                                     if($line -match $regex){$LogViewTB.AppendText("`r`n$($line)")}
+                              
+                              
+                              }
+
+                              
+
+                              
+                              })
+
+
+    # Remove Log .net Button
+    #==============================
+    $RemoveLogButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Remove Log"
+    Autosize = [boolean]$true
+    Location = '388,520'
+    }
+    $RemoveLogButton.add_click({
+                                Remove-Item -Path $LogListBox.SelectedItem -Verbose -Force
+                                $LogListBox.Items.Clear()
+
+                                $reQueryLogs = gci -Path "\\prlfs01\iswizards\superscript\Logs\Log-Archive" -Recurse |
+                                               Where {$_.Extension -eq ".txt"} | 
+                                               Select -Property Directory, Name, CreationTime |
+                                               Sort-Object -Property CreationTime -Descending
+
+                                               foreach ($ReQ in $reQueryLogs) {
+                                                                              [void] $LogListBox.Items.Add("$($ReQ.Directory)\$($ReQ.Name)")
+                                                                              }
+
+                                $LogRemovNotif = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+                                $LogRemovNotif.Popup("$($ReQ.Directory)\$($ReQ.Name) was removed!",0,"Removal Success!")
+                                $LogViewTB.Clear()
+                                })
+
+    $FormAssemblyBuild = @(
+                           $LogListBox,
+                           $LogViewTB,
+                           $OpenLogButton,
+                           $RemoveLogButton
+                           )
+                           foreach ($buildItem in $FormAssemblyBuild) {
+                           
+                                                                      $LogExmainForm.Controls.Add($buildItem)
+                           
+                                                                      }
+    
+    
+    $LogExmainForm.ShowDialog()
+
+}
+
+    
+    # Superscript Log Explorer Button
+    $ssLogViewerButton = New-Object System.Windows.Forms.Button -Property @{
+    Text = [System.String]"View Logs"
+    AutoSize = [boolean]$True
+    ForeColor = "Teal"
+    Location = '20,360'
+    }
+    $ssLogViewerButton.add_click({SSLogExplorer})
+
+
     # Add Components to Admin Consoles Tab
     #======================================
     
@@ -3831,17 +5018,16 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
                            $PrinterAdminConsoleLabel,
                            $ExchangeAdminCenterButton,
                            $SophosAdminButton,
-                           $OpgenieAdminButton,
                            $O365AdminButton,
                            $1PasswordAdminButton,
                            $LandeskAdminButton,
-                           $WHDPortal,
-                           $MarketoAdminButton,
                            $BeavertonAdminConsoleButton,
                            $PearlAdminConsoleButton,
                            $Fox9AdminConsoleButton,
                            $Fox6AdminConsoleButton,
-                           $KCAdminConsoleButton
+                           $KCAdminConsoleButton,
+                           $ssLogViewerLabel,
+                           $ssLogViewerButton
                            )
 
         foreach ($consolelink in $adminconsolearray)
@@ -3854,10 +5040,10 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
 	#                              tabpage5 About                              #
 	#==========================================================================#
 	$tabpage5.Location = '42, 4'
-	$tabpage5.Name = 'tabpage6'
+	$tabpage5.Name = 'tabpage5'
 	$tabpage5.Padding = '3, 3, 3, 3'
 	$tabpage5.Size = '583, 442'
-	$tabpage5.TabIndex = 6
+	$tabpage5.TabIndex = 7
 	$tabpage5.Text = 'About'
 	$tabpage5.UseVisualStyleBackColor = $True
 
@@ -3878,7 +5064,7 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
     Location = '370,229'
     Font = $LabelFonts
     }
-    $AboutInfoMailLink.add_click({[system.Diagnostics.Process]::start("mailto:ithelp@ruby.com")})
+    $AboutInfoMailLink.add_click({[system.Diagnostics.Process]::start("https://help.ruby.com/")})
 
     # Main About Textbox
     #=====================================================================
@@ -3915,7 +5101,349 @@ write-host "Teams Roaming Cache cleared on system $($TeamsHost)" -ForegroundColo
                                                                     }
     
     
-    $tabpage5.Controls.Add($AboutInfoTextbox)	
+    $tabpage5.Controls.Add($AboutInfoTextbox)
+    
+    
+    #================================================================#
+	#                    tab page6 HotFixes                          #
+	#================================================================#
+	$tabpage6.Location = '42, 4'
+	$tabpage6.Name = 'tabpage6'
+	$tabpage6.Padding = '3, 3, 3, 3'
+	$tabpage6.Size = '583, 442'
+	$tabpage6.TabIndex = 6
+	$tabpage6.Text = 'Hotfixes'
+	$tabpage6.UseVisualStyleBackColor = $True
+
+
+    #================================================================#
+    # GTA Unattended Mouse Cursor Fix                                #
+    #================================================================#
+    
+    
+    # GTA Unattend Mouse Cursor Fix Label
+    #================================================================#	
+    $GTAUMCFL = New-Object System.Windows.Forms.Label -Property @{
+    Text = "GTA Unttended Mouse Cursor Fix"
+    Font = $LabelFonts
+    ForeColor = "Teal"
+    AutoSize = $True
+    Location = '20,20'
+    }
+
+
+    # GTA Unattend Mouse Cursor Fix Hostname Label
+    #================================================================#
+    $GTAUMCFHL = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Hostname:"
+    AutoSize = $True
+    Location = '20,50'
+    }
+
+
+    # GTA Unattend Mouse Cursor Fix Hostname Textbox
+    #================================================================#
+    $GTAUMCFTB = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "LightGray"
+    Size = '100,30'
+    Location = '80,47'
+    }
+
+
+
+    # GTA Unattend Mouse Cursor Fix Function
+    #================================================================#
+    Function BlastGTAUnattend {
+
+clear
+
+
+
+Invoke-Command -ComputerName $GTAUMCFTB.Text -ScriptBlock {
+
+                                                    Get-Process | where -Property Name -Like "LogmeinRemoteSupport*" | Stop-Process -Force -Verbose
+                                                    Get-Process | where -Property Name -Like "GoToAssist*" | Stop-Process -Force -Verbose
+
+                                                   }
+
+
+
+$getService = Get-Service -ComputerName $GTAUMCFTB.Text | where -Property name -Like "LMIR*"
+
+if ($getService -ne $null) { 
+
+cmd.exe /c sc \\"$($GTAUMCFTB.Text)" delete "$($getService.Name)" /w
+
+}
+
+Else {
+
+      Write-Host "Service Not Running! Starting Removal." -ForegroundColor Magenta
+
+     }
+
+$DIRPATHS = @(
+              "\\$($GTAUMCFTB.Text)\c$\Program Files (x86)\LogMeIn Remote Support Unattended",
+              "\\$($GTAUMCFTB.Text)\c$\Program Files (x86)\LogMeIn RescueAssist Unattended",
+              "\\$($GTAUMCFTB.Text)\c$\Program Files (x86)\GoToAssist Remote Support Unattended"
+              )
+
+
+Foreach ($dir in $DIRPATHS) {
+                                           
+                             $DoesFolderExist = Test-Path -Path $dir
+                                                
+                             if ($DoesFolderExist -ne $false) {
+                                                                                  
+                                                               Remove-Item -Path $dir -Recurse -Force -Verbose
+                                                
+                                                              }
+
+                                                              Else {
+                                                                                 
+                                                                    Write-Host "$($dir) does not exist on $($GTAUMCFTB.Text)" -ForegroundColor Red
+                                                                                 
+                                                                   }
+                                                
+                                                
+                                              
+              
+                             }
+
+
+
+Write-Host "Unattended Support Obliterated!" -ForegroundColor Green
+
+
+}
+
+
+    # GTA Unattend Mouse Cursor Fix Button
+    #================================================================#
+    $GTAUMCFBT = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Run"
+    Autosize = $True
+    Location = '185,45'
+    }
+    $GTAUMCFBT.add_click({BlastGTAUnattend})
+
+
+
+    #================================================================#
+    # Public Folder SMTP array change - Finish Me!                   #
+    #================================================================#
+
+    
+
+    # Public Folder STMP Address Updater Label
+    #================================================================#
+    $PFSMTPChangeLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Public Folder SMTP Proxy Address change Utility"
+    AutoSize = $True
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Location = '20,100'
+    }
+
+    
+    # Old Public Folder SMTP Proxy Label
+    #================================================================# 
+    $PFSMTPCPATBLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = "Public Folder Proxy Address lookup:"
+    Autosize = $True
+    Location = '20,130'
+    }
+    
+    
+    # Old Public Folder SMTP Proxy Address Textbox
+    #================================================================#
+    $PFSMTPCPATB = New-Object System.Windows.Forms.TextBox -Property @{
+    BackColor = "lightgray"
+    Size = '150,30'
+    Location = '210,127'
+    }
+   
+
+    # Verify Current SMTP Proxy addresses for current Public Folder Button
+    #================================================================#
+    $PFSMTPCPABTVerify = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Verify"
+    Autosize = $True
+    Location = '365,125'
+    }
+    $PFSMTPCPABTVerify.add_click({
+    
+    if ($PFSMTPCPATB.Text -ne '') {
+    
+    Clear
+
+    $PFSMTPCPAListbox.Items.Clear()
+
+
+    $FindPublicMailbox = Get-ADObject -Filter * -Properties proxyaddresses | 
+                         Where {$_.proxyaddresses -eq "smtp:$($PFSMTPCPATB.Text)"} | 
+                         Select proxyaddresses -ExpandProperty proxyaddresses
+
+    $FindPublicMailboxGUID = Get-ADObject -Filter * -Properties ObjectGUID, proxyaddresses, ObjectClass, Name |
+                             Where {$_.proxyAddresses -eq "smtp:$($PFSMTPCPATB.Text)"} |
+                             Select ObjectGUID, proxyaddresses, ObjectClass, Name
+
+   
+
+    Foreach ($smtpAddy in $FindPublicMailbox) {$PFSMTPCPAListbox.Items.Add($smtpAddy)}
+    
+    
+    $PFSMTPCPAListboxLabel.Text = " SMTP Array for: $($FindPublicMailboxGUID.Name)"
+    
+    
+    
+    
+    
+    } Else {
+            
+            $NoProxyInputError = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+            $NoProxyInputError.Popup("No SMTP address provided!",0,"Invalid Input - Verify SMTP proxy address") 
+    
+           
+           }
+    
+    })
+
+
+    
+    # Clear Public folder SMTP proxy address lookup
+    #================================================================#
+    $PFSMTPCPABTClear = New-Object System.Windows.Forms.Button -Property @{
+    Text = "Clear"
+    Autosize = $True
+    Location = '445,125'
+    }
+    $PFSMTPCPABTClear.add_click({
+    
+    $PFSMTPCPAListbox.Items.Clear()
+    
+    $PFSMTPCPAListboxLabel.Text = " SMTP Array for: "
+    
+    $PFSMTPCPATB.Clear()
+    
+    })
+
+
+    
+    # Current SMTP Proxy addresses Listbox Label
+    #================================================================#
+    $PFSMTPCPAListboxLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = " SMTP Array for: "
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Size = '200,16'
+    Location = '20,174'
+    }
+
+
+
+    # Current SMTP Proxy addresses Listbox
+    #================================================================#
+    $PFSMTPCPAListbox = New-Object System.Windows.Forms.ListBox -Property @{
+    size = '200,100'
+    Location = '20,190'
+    Font = $LabelFonts
+    BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3d
+    }
+    
+
+
+    # New Proxy Address to replace in array label
+    #================================================================#
+    $PFSMTPNewSTMPLabel = New-Object System.Windows.Forms.Label -Property @{
+    Text = " New SMTP Proxy Address "
+    Size = '170,17'
+    Font = $LabelFonts
+    Forecolor = "Teal"
+    Location = '230,174'
+    }
+
+
+    
+    # New Proxy Address to replace in array Textbox
+    #================================================================#
+    $PFSMTPNewSTMPTB = New-Object System.Windows.Forms.TextBox -Property @{
+    Backcolor = "LightGray"
+    Size = '170,30'
+    Location = '230,191'
+    BorderStyle = [System.Windows.Forms.BorderStyle]::Fixed3d
+    }
+
+
+
+    # Replace Proxy address in array Button
+    #================================================================#
+    $PFSMTPReplaceBT = New-Object System.Windows.Forms.Button -Property @{
+    Text = " Replace SMTP Proxy Address "
+    Autosize = $True
+    Location = '230,222'
+    }
+    $PFSMTPReplaceBT.add_click({
+
+    if ($PFSMTPNewSTMPTB.Text -ne '') {
+
+    $FindPublicMailboxGUID = Get-ADObject -Filter * -Properties ObjectGUID, proxyaddresses, ObjectClass, Name |
+                             Where {$_.proxyAddresses -eq "smtp:$($PFSMTPCPATB.Text)"} |
+                             Select ObjectGUID, proxyaddresses, ObjectClass, Name
+    
+    Write-Host "Removing proxyAddress from property array: $($PFSMTPCPAListbox.SelectedItem)" -ForegroundColor Yellow 
+    Set-ADObject $FindPublicMailboxGUID.ObjectGUID -Remove @{proxyAddresses="$($PFSMTPCPAListbox.SelectedItem)"} -Confirm:$false -Verbose
+    
+
+    Write-Host "Adding proxyAddress from property array: smtp:$($PFSMTPNewSTMPTB.Text)" -ForegroundColor Yellow 
+    Set-ADObject $FindPublicMailboxGUID.ObjectGUID -Add @{proxyAddresses="smtp:$($PFSMTPNewSTMPTB.Text)"} -Confirm:$false -Verbose
+    
+
+    clear
+
+    $ProxyReplaceSuccess = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+    $ProxyReplaceSuccess.Popup("SMTP address successfully replaced!",0,"Success - Replace SMTP proxy address") 
+
+    
+    } Else {
+            
+            $NoProxyReplaceError = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+            $NoProxyReplaceError.Popup("No SMTP address provided!",0,"Invalid Input - Replace SMTP proxy address") 
+    
+    
+           }
+
+
+    })
+
+
+
+    
+    # Add Controls to Hotfix tab
+    #================================================================#
+    $HotFixArray = @(
+                    $GTAUMCFL,
+                    $GTAUMCFHL,
+                    $GTAUMCFTB,
+                    $GTAUMCFBT,
+                    $PFSMTPChangeLabel,
+                    $PFSMTPCPATBLabel,
+                    $PFSMTPCPATB,
+                    $PFSMTPCPABTVerify,
+                    $PFSMTPCPABTClear,
+                    $PFSMTPCPAListboxLabel,
+                    $PFSMTPCPAListbox,
+                    $PFSMTPNewSTMPLabel,
+                    $PFSMTPNewSTMPTB,
+                    $PFSMTPReplaceBT
+                    )
+                    foreach ($HFComponent in $HotFixArray){
+                                                           $tabpage6.Controls.Add($HFComponent)
+                                                          }
+
 
 
 	$tabcontrol1.ResumeLayout()
