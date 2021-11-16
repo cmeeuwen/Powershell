@@ -1,0 +1,346 @@
+# Mass Modify Function
+    #==============================================================#
+    Function MassUserEditor {
+
+	#----------------------------------------------
+	#region Import the Assemblies and resources
+	#----------------------------------------------
+	[void][reflection.assembly]::Load('System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089')
+	[void][reflection.assembly]::Load('System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.DirectoryServices, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+	[void][reflection.assembly]::Load('System.ServiceProcess, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a')
+
+    $LabelFonts = New-Object System.Drawing.Font("Verdana",8,[System.Drawing.FontStyle]::Bold)
+    #$FormIcon = New-Object System.Drawing.Icon ("$PSScriptRoot\Source\ros_app_icon.ico")
+
+# Main Form Build
+#=============================================================================================================#
+$mainEditorForm = New-Object System.Windows.Forms.Form -Property @{
+Size = '800,420'
+Opacity = 0.95
+StartPosition = [System.Windows.Forms.FormStartPosition]::CenterScreen
+#Icon = $FormIcon
+Name = "Group Member Modifier"
+Text = "Group Member Modifier"
+}
+
+
+# User List Label
+#=============================================================================================================#
+$UserListLabel = New-Object System.Windows.Forms.Label -Property @{
+Autosize = $true
+Text = "User List"
+Font = $LabelFonts
+Forecolor = "Teal"
+location = '15,20'
+}
+
+
+# AD user listbox
+#=============================================================================================================#
+$UserList = New-Object System.Windows.Forms.ListBox -Property @{
+size = '350,320'
+Location = '15,40'
+SelectionMode = 'MultiSimple'
+Font = $LabelFonts
+}
+
+$GetActiveAccounts = get-aduser -Filter * -Properties Name, SamAccountName, Title, Department, Manager, EmployeeID, Enabled, UserPrincipalName |
+                     Sort -Property SamAccountName |
+                     foreach {$UserList.Items.Add($_.samaccountname)}
+
+
+
+
+
+# Group Drop Down Label
+#=============================================================================================================#
+$GroupsDropdownLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Group"
+Autosize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '400,20'
+}
+
+
+
+# AD group drop down list
+#=============================================================================================================#
+$AddToGroupList = New-Object System.Windows.Forms.ComboBox -Property @{
+DropDownStyle = [System.Windows.Forms.ComboBoxStyle]::DropDown
+Location = '400,40'
+Size = '220,50'
+DropDownHeight = '300'
+}
+$AddToGroupList.AutoCompleteMode = [System.Windows.Forms.AutoCompleteMode]::SuggestAppend;
+$AddToGroupList.AutoCompleteSource = [System.Windows.Forms.AutoCompleteSource]::CustomSource;
+
+
+$getADgroups = Get-ADGroup -SearchBase 'OU=Groups,DC=MEW,DC=Domain,DC=org' -Filter 'ObjectClass -eq "group"' |
+               select Name, SamAccountName | Sort-Object -Property Name, SamAccountName
+
+               foreach($GroupItem in $getADgroups) {
+                                                    # Add Items to dropdown / ComboBox
+                                                    $AddToGroupList.Items.Add($GroupItem.SamAccountName)
+                                                    
+                                                    # Add Items to Auto Complete Source
+                                                    $AddToGroupList.AutoCompleteCustomSource.Add($GroupItem.SamAccountName)
+                                                   }
+                                                   clear
+
+
+# Add to Group Button
+#=============================================================================================================#
+$MassAddtoGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Add Users"
+Autosize = $true
+Forecolor = "Teal"
+Location = '400,180'
+}                      
+$MassAddtoGroupButton.add_click({
+
+if(($UserList.SelectedItem -ne $null -and $AddToGroupList.SelectedItem -ne $null) -or ($UserList.SelectedItems -ne $null -and $AddToGroupList.SelectedItem -ne $null)){
+
+    foreach($userItem in $UserList.SelectedItems) {
+                                                  
+                                                  Write-Host "Adding $($userItem) to the group $($AddToGroupList.SelectedItem)" -ForegroundColor Green
+                                                  Add-ADGroupMember -Identity $AddToGroupList.SelectedItem $userItem -Verbose
+
+                                                  }
+
+
+} Else {
+        
+        $NoUsersToAdd = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersToAdd.Popup("No Users or Group Selected!",0,"Invalid Selection - Add Users Error") 
+
+
+       }
+
+       #$SuccessUsersToAdd = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       #$SuccessUsersToAdd.Popup("Selected User / Users Removed!",0,"Success - Removed Users from group $($AddToGroupList.SelectedItem)") 
+
+})
+
+
+
+# Remove from Group Button
+#=============================================================================================================#
+$MassRemoveFromGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Remove Users"
+Autosize = $true
+Forecolor = "Teal"
+Location = '480,180'
+}                      
+$MassRemoveFromGroupButton.add_click({
+
+if(($UserList.SelectedItem -ne $null -and $AddToGroupList.SelectedItem -ne $null) -or ($UserList.SelectedItems -ne $null -and $AddToGroupList.SelectedItem -ne $null)){
+
+    foreach($userItemR in $UserList.SelectedItems) {
+                                                  
+                                                   Write-Host "Removing $($userItemR) from the selected group $($AddToGroupList.SelectedItem)" -ForegroundColor Magenta
+                                                  
+                                                   Remove-ADGroupMember $AddToGroupList.SelectedItem -Member $userItemR -Confirm:$false -Verbose
+
+                                                  
+                                                   }
+
+
+} Else {
+        
+        $NoUsersToRemove = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoUsersToRemove.Popup("No Users or Group Selected!",0,"Invalid Selection - Remove Users Error") 
+
+
+       }
+
+       #$SuccessUsersToRemove = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+       #$SuccessUsersToRemove.Popup("Selected User / Users Removed!",0,"Success - Remove Users from group $($AddToGroupList.SelectedItem)") 
+
+})
+
+
+
+# View Group Button
+#=============================================================================================================#
+$ViewGroupButton = New-Object System.Windows.Forms.Button -Property @{
+Text = "View Group"
+Autosize = $true
+Forecolor = "Teal"
+Location = '575,180'
+}                      
+$ViewGroupButton.add_click({
+
+clear
+
+
+if($AddToGroupList.SelectedItem -ne $null) {
+
+# View Group info Form
+#=======================================================================#
+$GroupForm = New-Object System.Windows.Forms.Form -Property @{
+Opacity = 0.95
+StartPosition = [System.Windows.Forms.FormStartPosition]::CenterScreen
+Icon = $FormIcon
+Name = "Ruby User Modifier"
+Size = '400,500'
+Text = "Group info"
+}
+
+$ListGroupMembers = Get-ADGroupMember -identity "$($AddToGroupList.SelectedItem)" -Recursive | 
+                    foreach{ get-aduser $_ -Properties SamAccountName } | 
+                    Select SamAccountName
+
+
+# Group Name Label
+#=======================================================================#
+$groupviewLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Group Name: $($AddToGroupList.SelectedItem)"
+AutoSize = $true
+Font = $LabelFonts
+Forecolor = "Teal"
+Location = '10,10'
+}
+
+
+
+
+# Member List Label
+#=======================================================================#
+$GroupMembersLabel = New-Object System.Windows.Forms.Label -Property @{
+Text = "Current Members:"
+Font = $LabelFonts
+Forecolor = "Teal"
+Autosize = $true
+Location = '10,100'
+}
+
+
+
+# Goup Members List Textbox
+#=======================================================================#
+$groupMemberListTextBox = New-Object System.Windows.Forms.RichTextBox -Property @{
+Size = '200,200'
+Location = '10,120'
+BackColor = "LightGray"
+ReadOnly = $True
+Multiline = $True
+Font = $LabelFonts
+}
+
+foreach($groupmember in $ListGroupMembers){
+                                           $groupMemberListTextBox.AppendText("`n$($groupmember.SamAccountName)")
+                                          }
+
+
+
+# Export Group Members to list Button
+#=======================================================================#
+$exportgroupmemberlistbutton = New-Object System.Windows.Forms.Button -Property @{
+Text = "Export Member list"
+Autosize = $true
+Forecolor = "Teal"
+Location = '243,118'
+}
+$exportgroupmemberlistbutton.add_click({
+
+# Save CSV Save File Dialog
+#==========================#
+$SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog -Property @{
+initialDirectory = "c:\"
+filter = 'CSV (*.csv)|*.csv|SpreadSheet (*.xlsx)|*.xlsx'
+FileName = "$($AddToGroupList.SelectedItem)"
+}
+$saveFile = $SaveFileDialog.ShowDialog()
+
+if ($saveFile -eq [System.Windows.Forms.DialogResult]::OK) {
+
+   foreach ($member in $ListGroupMembers) {"$($member.SamAccountName)" | Out-File "$($SaveFileDialog.FileName)" -Append -Verbose}
+
+   clear
+
+   $successfulExportNotif = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+
+   $successfulExportNotif.Popup("Exported Members list for $($AddToGroupList.SelectedItem)!",0,"File Name: $($SaveFileDialog.FileName)") 
+
+} Elseif ($saveFile -eq [System.Windows.Forms.DialogResult]::Cancel) {
+        
+        $CancelExportNotif = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+
+        $CancelExportNotif.Popup("Cancelled export for $($AddToGroupList.SelectedItem)!",0,"Export Cancelled: $($SaveFileDialog.FileName)") 
+
+       }
+
+})
+
+
+
+$groupinfoCompArray = @(
+                       $groupviewLabel,
+                       $GroupMembersLabel,
+                       $groupMemberListTextBox,
+                       $exportgroupmemberlistbutton
+                       )
+                       foreach($infoComp in $groupinfoCompArray){$GroupForm.Controls.Add($infoComp)}
+
+
+
+
+
+$showGroupForm = $GroupForm.ShowDialog()
+
+} Else {
+        
+        $NoGroupSelected = New-Object -ComObject Wscript.Shell -ErrorAction Stop
+          
+        $NoGroupSelected.Popup("No Group Selected!",0,"Invalid Selection - View Group") 
+
+
+       }
+
+
+
+
+})
+                      
+
+
+
+# Form Components array / build
+#==============================#
+
+$compntArray = @(
+                 $UserListLabel,
+                 $UserList,
+                 $GroupsDropdownLabel,
+                 $AddToGroupList,
+                 $MassAddtoGroupButton,
+                 $MassRemoveFromGroupButton,
+                 $ViewGroupButton
+                )
+                foreach ($compnt in $compntArray) {
+                                                   $mainEditorForm.Controls.Add($compnt)
+                                                  }
+
+
+
+
+
+
+
+
+$result = $mainEditorForm.ShowDialog()
+
+[System.GC]::Collect()
+$error.Clear()
+
+
+}
+
+ MassUserEditor
